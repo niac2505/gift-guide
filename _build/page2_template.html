@@ -22,7 +22,9 @@
     position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 100000;
     font: 18px Times, serif; color: #000; white-space: nowrap; pointer-events: none;
     font-variant-numeric: tabular-nums;
+    display: none;   /* only shown while the Prices toggle is on */
   }
+  body.prices-on #total { display: block; }
 
   /* Price toggle (top right) */
   #priceToggle {
@@ -136,6 +138,7 @@ function hidePrice() {
 toggle.addEventListener('click', () => {
   showPrices = !showPrices;
   toggle.setAttribute('aria-pressed', showPrices);
+  document.body.classList.toggle('prices-on', showPrices);   // shows/hides the total
   if (!showPrices) hidePrice();
 });
 
