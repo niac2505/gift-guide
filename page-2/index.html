@@ -17,6 +17,13 @@
   @keyframes pop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
   #home { position: fixed; top: 12px; left: 18px; z-index: 100000; font: 14px Times, serif; color: #000; }
 
+  /* Running total of every gift on screen (top center) */
+  #total {
+    position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 100000;
+    font: 18px Times, serif; color: #000; white-space: nowrap; pointer-events: none;
+    font-variant-numeric: tabular-nums;
+  }
+
   /* Price toggle (top right) */
   #priceToggle {
     position: fixed; top: 10px; right: 18px; z-index: 100000;
@@ -48,6 +55,7 @@
 </head>
 <body>
 <a id="home" href="../index.html">Home</a>
+<div id="total" aria-live="polite">Total: $0</div>
 <button id="priceToggle" type="button" aria-pressed="false">
   <span>Prices</span><span class="track"><span class="knob"></span></span>
 </button>
@@ -173,7 +181,15 @@ function addImage(cx, cy, animate, awayFrom) {
   board.appendChild(el);
   placed.push(p);
   makeDraggable(p);
+  updateTotal();
   return p;
+}
+
+// Total price of every gift currently on the page.
+const totalEl = document.getElementById('total');
+function updateTotal() {
+  const sum = placed.reduce((t, p) => t + parseFloat(p.price.replace(/[^0-9.]/g, '')), 0);
+  totalEl.textContent = 'Total: $' + sum.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 }
 
 // Shrink every image already on the page by 2%, then add one new image.
