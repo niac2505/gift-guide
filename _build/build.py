@@ -9,9 +9,14 @@ def item(i):
     return f'<li>{name}<br>\n{e(i["desc"])}</li>' if i.get('desc') else f'<li>{name}</li>'
 os.makedirs(f'{out}/refinery29',exist_ok=True)
 # home
-links='\n'.join(f'<li><a href="{h}">{t}</a></li>' for h,t in [('refinery29/the-art-of-giving.html','Refinery29'),('page-2/index.html','Page 2'),('page-3/index.html','Page 3'),('page-4/index.html','Page 4'),('page-5/index.html','Page 5')])
+links='\n'.join(f'<li><a href="{h}">{t}</a></li>' for h,t in [('refinery29/the-art-of-giving.html','Refinery29'),('page-2/index.html','Vogue Gifts Under $100'),('page-3/index.html','Page 3'),('page-4/index.html','Page 4'),('page-5/index.html','Page 5')])
 open(f'{out}/index.html','w').write(page('Home',f'<h1>Home</h1>\n<ul>\n{links}\n</ul>',0))
-for n in range(2,6):
+# page 2 is the Vogue collage (built from _build/page2_template.html)
+_t=os.path.join(os.path.dirname(os.path.abspath(__file__)),'page2_template.html')
+if os.path.exists(_t):
+    os.makedirs(f'{out}/page-2',exist_ok=True)
+    open(f'{out}/page-2/index.html','w').write(open(_t).read().replace('__IMAGES__',open(os.path.join(os.path.dirname(_t),'page2_images.json')).read().strip()))
+for n in range(3,6):
     os.makedirs(f'{out}/page-{n}',exist_ok=True)
     open(f'{out}/page-{n}/index.html','w').write(page(f'Page {n}',f'<p><a href="../index.html">Home</a></p>\n<h1>Page {n}</h1>\n<p>Coming soon.</p>',1))
 # hub

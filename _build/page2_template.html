@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vogue Gifts Under $100</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #fff; overflow: hidden; }
+  #board { position: fixed; inset: 0; touch-action: none; user-select: none; -webkit-user-select: none; }
+  #board img {
+    position: absolute; cursor: grab; -webkit-user-drag: none;
+    transition: width .25s ease, height .25s ease, left .25s ease, top .25s ease;
+  }
+  #board img.dragging { cursor: grabbing; transition: none; }
+  #board img.new { animation: pop .35s ease-out; }
+  @keyframes pop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
+  #home { position: fixed; top: 12px; left: 18px; z-index: 100000; font: 14px Times, serif; color: #000; }
+</style>
+</head>
+<body>
+<a id="home" href="../index.html">Home</a>
+<div id="board"></div>
+<script>
+// [file name, width, height] for every image in images/
+const ALL = __IMAGES__;
+const SHRINK = 0.97;          // existing images shrink 3% per new image
+const START_COUNT = 12;       // images shown on first load, like the reference collage
+
+const board = document.getElementById('board');
+const placed = [];            // { el, cx, cy, scale, w, h }
+let pool = ALL.map((_, i) => i);
+let zTop = 1;
+
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+shuffle(pool);
+
+// Every image gets roughly the same visual area, based on the window size.
+function baseSize(w, h) {
+  const s = Math.min(innerWidth, innerHeight) * 0.3;
+  let bw = s * Math.sqrt(w / h), bh = s * Math.sqrt(h / w);
+  const maxH = innerHeight * 0.55;
+  if (bh > maxH) { bw *= maxH / bh; bh = maxH; }
+  return [bw, bh];
+}
+
+function render(p) {
+  const w = p.w * p.scale, h = p.h * p.scale;
+  p.el.style.width = w + 'px';
+  p.el.style.height = h + 'px';
+  p.el.style.left = (p.cx - w / 2) + 'px';
+  p.el.style.top = (p.cy - h / 2) + 'px';
+}
+
+// Find an open spot: try random points and keep the one farthest from other images.
+function openSpot(w, h) {
+  const pad = 20;
+  let best = null, bestScore = -1;
+  for (let t = 0; t < 60; t++) {
+    const cx = pad + w / 2 + Math.random() * Math.max(1, innerWidth - w - pad * 2);
+    const cy = pad + h / 2 + Math.random() * Math.max(1, innerHeight - h - pad * 2);
+    let score = Infinity;
+    for (const p of placed) {
+      const dx = Math.abs(p.cx - cx) - (p.w * p.scale + w) / 2;
+      const dy = Math.abs(p.cy - cy) - (p.h * p.scale + h) / 2;
+      score = Math.min(score, Math.max(dx, dy));
+    }
+    if (score > bestScore) { bestScore = score; best = [cx, cy]; }
+  }
+  return best;
+}
+
+function addImage(cx, cy, animate) {
+  if (!pool.length) return null;
+  const [file, iw, ih] = ALL[pool.pop()];
+  const [w, h] = baseSize(iw, ih);
+  if (cx == null) [cx, cy] = openSpot(w, h);
+  const el = document.createElement('img');
+  el.src = 'images/' + file + '.png';
+  el.alt = file.replace(/-/g, ' ');
+  el.draggable = false;
+  if (animate) el.className = 'new';
+  el.style.zIndex = zTop++;
+  const p = { el, cx, cy, scale: 1, w, h };
+  render(p);
+  board.appendChild(el);
+  placed.push(p);
+  makeDraggable(p);
+  return p;
+}
+
+// Shrink every image already on the page by 3%, then add one new image.
+function addWithShrink() {
+  if (!pool.length) return;
+  for (const p of placed) { p.scale *= SHRINK; render(p); }
+  addImage(null, null, true);
+}
+
+function makeDraggable(p) {
+  let startX, startY, offX, offY, moved = false;
+  p.el.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    p.el.setPointerCapture(e.pointerId);
+    p.el.classList.add('dragging');
+    p.el.style.zIndex = zTop++;
+    startX = e.clientX; startY = e.clientY;
+    offX = e.clientX - p.cx; offY = e.clientY - p.cy;
+    moved = false;
+  });
+  p.el.addEventListener('pointermove', e => {
+    if (!p.el.hasPointerCapture(e.pointerId)) return;
+    if (!moved && Math.hypot(e.clientX - startX, e.clientY - startY) < 4) return;
+    moved = true;
+    p.cx = e.clientX - offX; p.cy = e.clientY - offY;
+    render(p);
+  });
+  const end = e => {
+    if (!p.el.hasPointerCapture(e.pointerId)) return;
+    p.el.releasePointerCapture(e.pointerId);
+    p.el.classList.remove('dragging');
+    if (moved) { addWithShrink(); addWithShrink(); }   // two new images per move
+  };
+  p.el.addEventListener('pointerup', end);
+  p.el.addEventListener('pointercancel', end);
+}
+
+// First load: a loose, overlapping cluster in the middle, like the reference.
+function startLayout() {
+  const cols = 5, rows = 3;
+  const cellW = innerWidth * 0.7 / cols, cellH = innerHeight * 0.66 / rows;
+  const left = innerWidth * 0.15, top = innerHeight * 0.17;
+  const cells = shuffle([...Array(cols * rows).keys()]).slice(0, START_COUNT);
+  for (const c of cells) {
+    const cx = left + (c % cols + 0.5) * cellW + (Math.random() - 0.5) * cellW * 0.4;
+    const cy = top + (Math.floor(c / cols) + 0.5) * cellH + (Math.random() - 0.5) * cellH * 0.4;
+    addImage(cx, cy, false);
+  }
+}
+startLayout();
+</script>
+</body>
+</html>

@@ -2,11 +2,140 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Page 2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vogue Gifts Under $100</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #fff; overflow: hidden; }
+  #board { position: fixed; inset: 0; touch-action: none; user-select: none; -webkit-user-select: none; }
+  #board img {
+    position: absolute; cursor: grab; -webkit-user-drag: none;
+    transition: width .25s ease, height .25s ease, left .25s ease, top .25s ease;
+  }
+  #board img.dragging { cursor: grabbing; transition: none; }
+  #board img.new { animation: pop .35s ease-out; }
+  @keyframes pop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
+  #home { position: fixed; top: 12px; left: 18px; z-index: 100000; font: 14px Times, serif; color: #000; }
+</style>
 </head>
-<body marginwidth="18" marginheight="18">
-<p><a href="../index.html">Home</a></p>
-<h1>Page 2</h1>
-<p>Coming soon.</p>
+<body>
+<a id="home" href="../index.html">Home</a>
+<div id="board"></div>
+<script>
+// [file name, width, height] for every image in images/
+const ALL = [["2027-panama-weekly-journal",327,520],["align-pants",168,520],["aristidis-hairbrush",358,520],["armenia-burning-papers",520,156],["art-of-backgammon",520,339],["asterales-earrings",520,248],["baies-berries-classic-candle",389,520],["banho-soap",520,332],["baume-des-muses-lip-balm",520,458],["big-effing-clip",520,287],["bistrot-bottle-opener",227,520],["bistrot-cake-slicer",145,520],["boat-and-tote",436,520],["bug-stripe-towels",440,520],["calm-stress-relief-herbal-tea",337,520],["capri-glass-tray",520,324],["cobra-salt-pepper-shaker-set",502,520],["demi-basket-weaving-kit",386,520],["discovery-box",279,520],["eau-rose-refillable-solid-parfum",468,520],["egyptian-drinking-glass",520,341],["essential-lip-contour-trio",340,520],["gardana-clogs",520,197],["gio-espresso-set",520,329],["hand-crafted-italian-toothbrush",204,520],["henna-brooch",487,520],["hydra-beauty-camellia-water-cream",162,520],["large-bar-soap",520,219],["le-tarot-de-marseille-cards",308,520],["lomography-reloadable-camera",520,293],["london-eye-mask",520,395],["luminous-deep-hydration-lifting-masks",431,520],["melograno-home-diffuser",520,352],["memo-glasses",520,149],["met-logo-sweatshirt",520,419],["montreal-pillow",520,497],["no-4-cheers-matchboxes",520,435],["no-4-comb",384,520],["ope-ra-incense",520,228],["parker-delicate-necklace",384,520],["picual-arbequina-olive-oil",270,520],["pocket-nylon-hair-brush",520,207],["refillable-lipstick-case",169,520],["relax-fluid-body-cream",225,520],["rituals-coffee",520,229],["river-mittens",478,520],["roma-heirloom-tomato-candle",459,520],["rouge-allure",270,520],["rouge-g-lipstick-case",221,520],["sajou-complete-sewing-set",520,466],["scuff-slippers",520,175],["softening-hand-wash",227,520],["speedcat-sneakers",520,287],["stations",346,520],["sticker-book",377,520],["the-cashmere-beanie",520,436],["the-collegiate-socks",243,520],["the-crack-of-dawn-hat",520,511],["the-flying-ointment",334,520],["the-moisturizing-soft-cream",483,520],["the-only-thing-there-is-to-want-a-memoir-of-three-loves",346,520],["the-original-sweater",413,520],["the-pocket-duo",520,383],["the-sally-luggage-tag",191,520],["the-yves-socks",379,520],["tube-huggie-hoops",520,389],["verdant-incense",148,520],["victorian-ration-cup",520,384],["wrinklit-led-mask",485,520],["annual-digital-subsciption-tote",409,520],["beaded-tassel-necklace",198,520],["cable-knit-gloves",512,520],["cosy-slipper-socks",473,520],["enamel-flower-jug",520,518],["espresso-maker",452,520],["felt-heart-ornament",397,520],["flower-napkin-set",520,518],["fringed-tie-style-scarf",131,520],["glazed-panettone",520,479],["leather-card-holder",520,376],["leather-pocket-emptiers",520,333],["lemon-squeezer-swan",520,345],["lined-leather-gloves",443,520],["mini-oval-tray",520,273],["mini-round-cocotte",520,355],["monogram-waffle-pouch",520,335],["mushrooms-matchbox",440,520],["pajama-set",233,520],["personalized-heritage-olive-oil",319,520],["picture-frame",425,520],["round-decorative-vase",468,520],["salt-cellar-set",520,338],["slim-crew-sweater",372,520],["small-jewelry-box",520,216],["square-scarf",350,520],["steel-plier-stapler",520,278],["stripe-locket",313,520],["stripe-pajama-set",520,333],["umbrella",384,520],["wave-matchbox-sleeve",520,269],["x-juliska-graham-cocktail-pick-set",203,520]];
+const SHRINK = 0.97;          // existing images shrink 3% per new image
+const START_COUNT = 12;       // images shown on first load, like the reference collage
+
+const board = document.getElementById('board');
+const placed = [];            // { el, cx, cy, scale, w, h }
+let pool = ALL.map((_, i) => i);
+let zTop = 1;
+
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+shuffle(pool);
+
+// Every image gets roughly the same visual area, based on the window size.
+function baseSize(w, h) {
+  const s = Math.min(innerWidth, innerHeight) * 0.3;
+  let bw = s * Math.sqrt(w / h), bh = s * Math.sqrt(h / w);
+  const maxH = innerHeight * 0.55;
+  if (bh > maxH) { bw *= maxH / bh; bh = maxH; }
+  return [bw, bh];
+}
+
+function render(p) {
+  const w = p.w * p.scale, h = p.h * p.scale;
+  p.el.style.width = w + 'px';
+  p.el.style.height = h + 'px';
+  p.el.style.left = (p.cx - w / 2) + 'px';
+  p.el.style.top = (p.cy - h / 2) + 'px';
+}
+
+// Find an open spot: try random points and keep the one farthest from other images.
+function openSpot(w, h) {
+  const pad = 20;
+  let best = null, bestScore = -1;
+  for (let t = 0; t < 60; t++) {
+    const cx = pad + w / 2 + Math.random() * Math.max(1, innerWidth - w - pad * 2);
+    const cy = pad + h / 2 + Math.random() * Math.max(1, innerHeight - h - pad * 2);
+    let score = Infinity;
+    for (const p of placed) {
+      const dx = Math.abs(p.cx - cx) - (p.w * p.scale + w) / 2;
+      const dy = Math.abs(p.cy - cy) - (p.h * p.scale + h) / 2;
+      score = Math.min(score, Math.max(dx, dy));
+    }
+    if (score > bestScore) { bestScore = score; best = [cx, cy]; }
+  }
+  return best;
+}
+
+function addImage(cx, cy, animate) {
+  if (!pool.length) return null;
+  const [file, iw, ih] = ALL[pool.pop()];
+  const [w, h] = baseSize(iw, ih);
+  if (cx == null) [cx, cy] = openSpot(w, h);
+  const el = document.createElement('img');
+  el.src = 'images/' + file + '.png';
+  el.alt = file.replace(/-/g, ' ');
+  el.draggable = false;
+  if (animate) el.className = 'new';
+  el.style.zIndex = zTop++;
+  const p = { el, cx, cy, scale: 1, w, h };
+  render(p);
+  board.appendChild(el);
+  placed.push(p);
+  makeDraggable(p);
+  return p;
+}
+
+// Shrink every image already on the page by 3%, then add one new image.
+function addWithShrink() {
+  if (!pool.length) return;
+  for (const p of placed) { p.scale *= SHRINK; render(p); }
+  addImage(null, null, true);
+}
+
+function makeDraggable(p) {
+  let startX, startY, offX, offY, moved = false;
+  p.el.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    p.el.setPointerCapture(e.pointerId);
+    p.el.classList.add('dragging');
+    p.el.style.zIndex = zTop++;
+    startX = e.clientX; startY = e.clientY;
+    offX = e.clientX - p.cx; offY = e.clientY - p.cy;
+    moved = false;
+  });
+  p.el.addEventListener('pointermove', e => {
+    if (!p.el.hasPointerCapture(e.pointerId)) return;
+    if (!moved && Math.hypot(e.clientX - startX, e.clientY - startY) < 4) return;
+    moved = true;
+    p.cx = e.clientX - offX; p.cy = e.clientY - offY;
+    render(p);
+  });
+  const end = e => {
+    if (!p.el.hasPointerCapture(e.pointerId)) return;
+    p.el.releasePointerCapture(e.pointerId);
+    p.el.classList.remove('dragging');
+    if (moved) { addWithShrink(); addWithShrink(); }   // two new images per move
+  };
+  p.el.addEventListener('pointerup', end);
+  p.el.addEventListener('pointercancel', end);
+}
+
+// First load: a loose, overlapping cluster in the middle, like the reference.
+function startLayout() {
+  const cols = 5, rows = 3;
+  const cellW = innerWidth * 0.7 / cols, cellH = innerHeight * 0.66 / rows;
+  const left = innerWidth * 0.15, top = innerHeight * 0.17;
+  const cells = shuffle([...Array(cols * rows).keys()]).slice(0, START_COUNT);
+  for (const c of cells) {
+    const cx = left + (c % cols + 0.5) * cellW + (Math.random() - 0.5) * cellW * 0.4;
+    const cy = top + (Math.floor(c / cols) + 0.5) * cellH + (Math.random() - 0.5) * cellH * 0.4;
+    addImage(cx, cy, false);
+  }
+}
+startLayout();
+</script>
 </body>
 </html>
