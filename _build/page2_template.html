@@ -23,7 +23,7 @@
 <script>
 // [file name, width, height] for every image in images/
 const ALL = __IMAGES__;
-const SHRINK = 0.97;          // existing images shrink 3% per new image
+const SHRINK = 0.98;          // existing images shrink 2% per new image
 const START_COUNT = 12;       // images shown on first load, like the reference collage
 
 const board = document.getElementById('board');
@@ -51,29 +51,30 @@ function render(p) {
   p.el.style.top = (p.cy - h / 2) + 'px';
 }
 
-// Find an open spot: try random points and keep the one farthest from other images.
-function openSpot(w, h) {
+// Pick a random spot anywhere on the screen (image stays fully visible).
+// If `awayFrom` is given, only accept spots far from that point.
+function randomSpot(w, h, awayFrom) {
   const pad = 20;
-  let best = [innerWidth / 2, innerHeight / 2], bestScore = -Infinity;
-  for (let t = 0; t < 60; t++) {
-    const cx = pad + w / 2 + Math.random() * Math.max(1, innerWidth - w - pad * 2);
-    const cy = pad + h / 2 + Math.random() * Math.max(1, innerHeight - h - pad * 2);
-    let score = Infinity;
-    for (const p of placed) {
-      const dx = Math.abs(p.cx - cx) - (p.w * p.scale + w) / 2;
-      const dy = Math.abs(p.cy - cy) - (p.h * p.scale + h) / 2;
-      score = Math.min(score, Math.max(dx, dy));
-    }
-    if (score > bestScore) { bestScore = score; best = [cx, cy]; }
+  const rand = () => [
+    pad + w / 2 + Math.random() * Math.max(1, innerWidth - w - pad * 2),
+    pad + h / 2 + Math.random() * Math.max(1, innerHeight - h - pad * 2)
+  ];
+  if (!awayFrom) return rand();
+  const minDist = Math.hypot(innerWidth, innerHeight) * 0.45;
+  let far = rand(), farD = 0;
+  for (let t = 0; t < 80; t++) {
+    const s = rand(), d = Math.hypot(s[0] - awayFrom[0], s[1] - awayFrom[1]);
+    if (d >= minDist) return s;            // first random spot that is far enough
+    if (d > farD) { farD = d; far = s; }   // otherwise remember the farthest one
   }
-  return best;
+  return far;
 }
 
-function addImage(cx, cy, animate) {
+function addImage(cx, cy, animate, awayFrom) {
   if (!pool.length) return null;
   const [file, iw, ih] = ALL[pool.pop()];
   const [w, h] = baseSize(iw, ih);
-  if (cx == null) [cx, cy] = openSpot(w, h);
+  if (cx == null) [cx, cy] = randomSpot(w, h, awayFrom);
   const el = document.createElement('img');
   el.src = 'images/' + file + '.png';
   el.alt = file.replace(/-/g, ' ');
@@ -88,11 +89,11 @@ function addImage(cx, cy, animate) {
   return p;
 }
 
-// Shrink every image already on the page by 3%, then add one new image.
-function addWithShrink() {
-  if (!pool.length) return;
+// Shrink every image already on the page by 2%, then add one new image.
+function addWithShrink(awayFrom) {
+  if (!pool.length) return null;
   for (const p of placed) { p.scale *= SHRINK; render(p); }
-  addImage(null, null, true);
+  return addImage(null, null, true, awayFrom);
 }
 
 // One drag at a time, tracked on the whole window so fast moves never "drop" the image.
@@ -117,7 +118,10 @@ function endDrag() {
   const { p, moved } = drag;
   drag = null;
   p.el.classList.remove('dragging');
-  if (moved) { addWithShrink(); addWithShrink(); }   // two new images per move
+  if (moved) {                       // two new images per move, far apart
+    const a = addWithShrink();
+    addWithShrink(a ? [a.cx, a.cy] : null);
+  }
 }
 window.addEventListener('pointerup', endDrag);
 window.addEventListener('pointercancel', endDrag);
