@@ -15,13 +15,42 @@
   #board img.new { animation: pop .35s ease-out; }
   @keyframes pop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
   #home { position: fixed; top: 12px; left: 18px; z-index: 100000; font: 14px Times, serif; color: #000; }
+
+  /* Price toggle (top right) */
+  #priceToggle {
+    position: fixed; top: 10px; right: 18px; z-index: 100000;
+    display: flex; align-items: center; gap: 8px;
+    font: 14px Times, serif; color: #000; background: none; border: 0; padding: 4px 0; cursor: pointer;
+  }
+  #priceToggle .track {
+    width: 34px; height: 18px; border-radius: 9px; border: 1px solid #000; position: relative;
+    transition: background .2s;
+  }
+  #priceToggle .knob {
+    position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%;
+    background: #000; transition: left .2s, background .2s;
+  }
+  #priceToggle[aria-pressed="true"] .track { background: #000; }
+  #priceToggle[aria-pressed="true"] .knob { left: 18px; background: #fff; }
+
+  /* While prices are on, the hovered image is swapped for its price */
+  #board img.priced { opacity: 0; }
+  #priceLabel {
+    position: absolute; display: none; pointer-events: none;
+    align-items: center; justify-content: center; text-align: center;
+    font-family: "Didot", "Bodoni 72", "Bodoni MT", "Times New Roman", serif;
+    font-weight: 700; color: #000; line-height: 1; letter-spacing: -0.02em; white-space: nowrap;
+  }
 </style>
 </head>
 <body>
 <a id="home" href="../index.html">Home</a>
+<button id="priceToggle" type="button" aria-pressed="false">
+  <span>Prices</span><span class="track"><span class="knob"></span></span>
+</button>
 <div id="board"></div>
 <script>
-// [file name, width, height] for every image in images/
+// [file name, width, height, price] for every image in images/ (prices from Vogue's "100 Gifts Under $100")
 const ALL = __IMAGES__;
 const SHRINK = 1;             // existing images keep their size (set below 1, e.g. 0.98, to shrink them)
 const START_COUNT = 12;       // images shown on first load, like the reference collage
@@ -56,7 +85,46 @@ function render(p) {
   p.el.style.height = h + 'px';
   p.el.style.left = (p.cx - w / 2) + 'px';
   p.el.style.top = (p.cy - h / 2) + 'px';
+  if (hovered === p) placeLabel(p);
 }
+
+// ---- Price toggle: when on, hovering an image shows its price in big text instead ----
+let showPrices = false;
+let hovered = null;
+const toggle = document.getElementById('priceToggle');
+const label = document.createElement('div');
+label.id = 'priceLabel';
+board.appendChild(label);
+
+function placeLabel(p) {
+  const w = p.w * p.scale, h = p.h * p.scale;
+  label.textContent = p.price;
+  label.style.left = (p.cx - w / 2) + 'px';
+  label.style.top = (p.cy - h / 2) + 'px';
+  label.style.width = w + 'px';
+  label.style.height = h + 'px';
+  // big text, sized to the image it replaces
+  label.style.fontSize = Math.max(40, Math.min(w / (p.price.length * 0.6), h * 0.6)) + 'px';
+  label.style.zIndex = 99999;   // always readable, above other images
+  label.style.display = 'flex';
+}
+function showPrice(p) {
+  if (!showPrices) return;
+  hidePrice();
+  hovered = p;
+  p.el.classList.add('priced');
+  placeLabel(p);
+}
+function hidePrice() {
+  if (hovered) hovered.el.classList.remove('priced');
+  hovered = null;
+  label.style.display = 'none';
+}
+toggle.addEventListener('click', () => {
+  showPrices = !showPrices;
+  toggle.setAttribute('aria-pressed', showPrices);
+  if (!showPrices) hidePrice();
+});
 
 // Pick a random spot anywhere on the screen (image stays fully visible).
 // If `awayFrom` is given, only accept spots far from that point.
@@ -79,7 +147,7 @@ function randomSpot(w, h, awayFrom) {
 
 function addImage(cx, cy, animate, awayFrom) {
   if (!pool.length) return null;
-  const [file, iw, ih] = ALL[pool.pop()];
+  const [file, iw, ih, price] = ALL[pool.pop()];
   const [w, h] = baseSize(iw, ih, file);
   if (cx == null) [cx, cy] = randomSpot(w, h, awayFrom);
   const el = document.createElement('img');
@@ -88,7 +156,9 @@ function addImage(cx, cy, animate, awayFrom) {
   el.draggable = false;
   if (animate) el.className = 'new';
   el.style.zIndex = zTop++;
-  const p = { el, cx, cy, scale: 1, w, h };
+  const p = { el, cx, cy, scale: 1, w, h, price };
+  el.addEventListener('pointerenter', () => showPrice(p));
+  el.addEventListener('pointerleave', () => { if (hovered === p && !(drag && drag.p === p)) hidePrice(); });
   render(p);
   board.appendChild(el);
   placed.push(p);

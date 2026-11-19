@@ -15,14 +15,43 @@
   #board img.new { animation: pop .35s ease-out; }
   @keyframes pop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
   #home { position: fixed; top: 12px; left: 18px; z-index: 100000; font: 14px Times, serif; color: #000; }
+
+  /* Price toggle (top right) */
+  #priceToggle {
+    position: fixed; top: 10px; right: 18px; z-index: 100000;
+    display: flex; align-items: center; gap: 8px;
+    font: 14px Times, serif; color: #000; background: none; border: 0; padding: 4px 0; cursor: pointer;
+  }
+  #priceToggle .track {
+    width: 34px; height: 18px; border-radius: 9px; border: 1px solid #000; position: relative;
+    transition: background .2s;
+  }
+  #priceToggle .knob {
+    position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%;
+    background: #000; transition: left .2s, background .2s;
+  }
+  #priceToggle[aria-pressed="true"] .track { background: #000; }
+  #priceToggle[aria-pressed="true"] .knob { left: 18px; background: #fff; }
+
+  /* While prices are on, the hovered image is swapped for its price */
+  #board img.priced { opacity: 0; }
+  #priceLabel {
+    position: absolute; display: none; pointer-events: none;
+    align-items: center; justify-content: center; text-align: center;
+    font-family: "Didot", "Bodoni 72", "Bodoni MT", "Times New Roman", serif;
+    font-weight: 700; color: #000; line-height: 1; letter-spacing: -0.02em; white-space: nowrap;
+  }
 </style>
 </head>
 <body>
 <a id="home" href="../index.html">Home</a>
+<button id="priceToggle" type="button" aria-pressed="false">
+  <span>Prices</span><span class="track"><span class="knob"></span></span>
+</button>
 <div id="board"></div>
 <script>
-// [file name, width, height] for every image in images/
-const ALL = [["2027-panama-weekly-journal",327,520],["align-pants",168,520],["aristidis-hairbrush",358,520],["armenia-burning-papers",520,156],["art-of-backgammon",520,339],["asterales-earrings",520,248],["baies-berries-classic-candle",389,520],["banho-soap",520,332],["baume-des-muses-lip-balm",520,458],["big-effing-clip",520,287],["bistrot-bottle-opener",227,520],["bistrot-cake-slicer",145,520],["boat-and-tote",436,520],["bug-stripe-towels",440,520],["calm-stress-relief-herbal-tea",337,520],["capri-glass-tray",520,324],["cobra-salt-pepper-shaker-set",502,520],["demi-basket-weaving-kit",386,520],["discovery-box",279,520],["eau-rose-refillable-solid-parfum",468,520],["egyptian-drinking-glass",520,341],["essential-lip-contour-trio",340,520],["gardana-clogs",520,197],["gio-espresso-set",520,329],["hand-crafted-italian-toothbrush",204,520],["henna-brooch",487,520],["hydra-beauty-camellia-water-cream",162,520],["large-bar-soap",520,219],["le-tarot-de-marseille-cards",308,520],["lomography-reloadable-camera",520,293],["london-eye-mask",520,395],["luminous-deep-hydration-lifting-masks",431,520],["melograno-home-diffuser",520,352],["memo-glasses",520,149],["met-logo-sweatshirt",520,419],["montreal-pillow",520,497],["no-4-cheers-matchboxes",520,435],["no-4-comb",384,520],["ope-ra-incense",520,228],["parker-delicate-necklace",384,520],["picual-arbequina-olive-oil",270,520],["pocket-nylon-hair-brush",520,207],["refillable-lipstick-case",169,520],["relax-fluid-body-cream",225,520],["rituals-coffee",520,229],["river-mittens",478,520],["roma-heirloom-tomato-candle",459,520],["rouge-allure",270,520],["rouge-g-lipstick-case",221,520],["sajou-complete-sewing-set",520,466],["scuff-slippers",520,175],["softening-hand-wash",227,520],["speedcat-sneakers",520,287],["stations",346,520],["sticker-book",377,520],["the-cashmere-beanie",520,436],["the-collegiate-socks",243,520],["the-crack-of-dawn-hat",520,511],["the-flying-ointment",334,520],["the-moisturizing-soft-cream",483,520],["the-only-thing-there-is-to-want-a-memoir-of-three-loves",346,520],["the-original-sweater",413,520],["the-pocket-duo",520,383],["the-sally-luggage-tag",191,520],["the-yves-socks",379,520],["tube-huggie-hoops",520,389],["verdant-incense",148,520],["victorian-ration-cup",520,384],["wrinklit-led-mask",485,520],["annual-digital-subsciption-tote",409,520],["beaded-tassel-necklace",198,520],["cable-knit-gloves",512,520],["cosy-slipper-socks",473,520],["enamel-flower-jug",520,518],["espresso-maker",452,520],["felt-heart-ornament",397,520],["flower-napkin-set",520,518],["fringed-tie-style-scarf",131,520],["glazed-panettone",520,479],["leather-card-holder",520,376],["leather-pocket-emptiers",520,333],["lemon-squeezer-swan",520,345],["lined-leather-gloves",443,520],["mini-oval-tray",520,273],["mini-round-cocotte",520,355],["monogram-waffle-pouch",520,335],["mushrooms-matchbox",440,520],["pajama-set",233,520],["personalized-heritage-olive-oil",319,520],["picture-frame",425,520],["round-decorative-vase",468,520],["salt-cellar-set",520,338],["slim-crew-sweater",372,520],["small-jewelry-box",520,216],["square-scarf",350,520],["steel-plier-stapler",520,278],["stripe-locket",313,520],["stripe-pajama-set",520,333],["umbrella",384,520],["wave-matchbox-sleeve",520,269],["x-juliska-graham-cocktail-pick-set",203,520]];
+// [file name, width, height, price] for every image in images/ (prices from Vogue's "100 Gifts Under $100")
+const ALL = [["2027-panama-weekly-journal",327,520,"$85"],["align-pants",168,520,"$98"],["aristidis-hairbrush",358,520,"$75"],["armenia-burning-papers",520,156,"$32"],["art-of-backgammon",520,339,"$85"],["asterales-earrings",520,248,"$85"],["baies-berries-classic-candle",389,520,"$90"],["banho-soap",520,332,"$26"],["baume-des-muses-lip-balm",520,458,"$59"],["big-effing-clip",520,287,"$36"],["bistrot-bottle-opener",227,520,"$45"],["bistrot-cake-slicer",145,520,"$44"],["boat-and-tote",436,520,"$50"],["bug-stripe-towels",440,520,"$32"],["calm-stress-relief-herbal-tea",337,520,"$19"],["capri-glass-tray",520,324,"$85"],["cobra-salt-pepper-shaker-set",502,520,"$95"],["demi-basket-weaving-kit",386,520,"$98"],["discovery-box",279,520,"$85"],["eau-rose-refillable-solid-parfum",468,520,"$76"],["egyptian-drinking-glass",520,341,"$98"],["essential-lip-contour-trio",340,520,"$64"],["gardana-clogs",520,197,"$75"],["gio-espresso-set",520,329,"$38"],["hand-crafted-italian-toothbrush",204,520,"$20"],["henna-brooch",487,520,"$80"],["hydra-beauty-camellia-water-cream",162,520,"$65"],["large-bar-soap",520,219,"$70"],["le-tarot-de-marseille-cards",308,520,"$70"],["lomography-reloadable-camera",520,293,"$95"],["london-eye-mask",520,395,"$98"],["luminous-deep-hydration-lifting-masks",431,520,"$100"],["melograno-home-diffuser",520,352,"$95"],["memo-glasses",520,149,"$60"],["met-logo-sweatshirt",520,419,"$75"],["montreal-pillow",520,497,"$84"],["no-4-cheers-matchboxes",520,435,"$6"],["no-4-comb",384,520,"$35"],["ope-ra-incense",520,228,"$75"],["parker-delicate-necklace",384,520,"$63"],["picual-arbequina-olive-oil",270,520,"$66"],["pocket-nylon-hair-brush",520,207,"$100"],["refillable-lipstick-case",169,520,"$43"],["relax-fluid-body-cream",225,520,"$65"],["rituals-coffee",520,229,"$51"],["river-mittens",478,520,"$79"],["roma-heirloom-tomato-candle",459,520,"$68"],["rouge-allure",270,520,"$53"],["rouge-g-lipstick-case",221,520,"$43"],["sajou-complete-sewing-set",520,466,"$83"],["scuff-slippers",520,175,"$100"],["softening-hand-wash",227,520,"$85"],["speedcat-sneakers",520,287,"$100"],["stations",346,520,"$28"],["sticker-book",377,520,"$35"],["the-cashmere-beanie",520,436,"$88"],["the-collegiate-socks",243,520,"$32"],["the-crack-of-dawn-hat",520,511,"$75"],["the-flying-ointment",334,520,"$42"],["the-moisturizing-soft-cream",483,520,"$100"],["the-only-thing-there-is-to-want-a-memoir-of-three-loves",346,520,"$14"],["the-original-sweater",413,520,"$98"],["the-pocket-duo",520,383,"$48"],["the-sally-luggage-tag",191,520,"$80"],["the-yves-socks",379,520,"$35"],["tube-huggie-hoops",520,389,"$98"],["verdant-incense",148,520,"$60"],["victorian-ration-cup",520,384,"$72"],["wrinklit-led-mask",485,520,"$99"],["annual-digital-subsciption-tote",409,520,"$18"],["beaded-tassel-necklace",198,520,"$99"],["cable-knit-gloves",512,520,"$90"],["cosy-slipper-socks",473,520,"$79"],["enamel-flower-jug",520,518,"$48"],["espresso-maker",452,520,"$55"],["felt-heart-ornament",397,520,"$15"],["flower-napkin-set",520,518,"$32"],["fringed-tie-style-scarf",131,520,"$36"],["glazed-panettone",520,479,"$36"],["leather-card-holder",520,376,"$98"],["leather-pocket-emptiers",520,333,"$85"],["lemon-squeezer-swan",520,345,"$48"],["lined-leather-gloves",443,520,"$48"],["mini-oval-tray",520,273,"$58"],["mini-round-cocotte",520,355,"$22"],["monogram-waffle-pouch",520,335,"$78"],["mushrooms-matchbox",440,520,"$5"],["pajama-set",233,520,"$90"],["personalized-heritage-olive-oil",319,520,"$88"],["picture-frame",425,520,"$86"],["round-decorative-vase",468,520,"$80"],["salt-cellar-set",520,338,"$100"],["slim-crew-sweater",372,520,"$68"],["small-jewelry-box",520,216,"$95"],["square-scarf",350,520,"$36"],["steel-plier-stapler",520,278,"$56"],["stripe-locket",313,520,"$75"],["stripe-pajama-set",520,333,"$85"],["umbrella",384,520,"$45"],["wave-matchbox-sleeve",520,269,"$60"],["x-juliska-graham-cocktail-pick-set",203,520,"$78"]];
 const SHRINK = 1;             // existing images keep their size (set below 1, e.g. 0.98, to shrink them)
 const START_COUNT = 12;       // images shown on first load, like the reference collage
 
@@ -56,7 +85,46 @@ function render(p) {
   p.el.style.height = h + 'px';
   p.el.style.left = (p.cx - w / 2) + 'px';
   p.el.style.top = (p.cy - h / 2) + 'px';
+  if (hovered === p) placeLabel(p);
 }
+
+// ---- Price toggle: when on, hovering an image shows its price in big text instead ----
+let showPrices = false;
+let hovered = null;
+const toggle = document.getElementById('priceToggle');
+const label = document.createElement('div');
+label.id = 'priceLabel';
+board.appendChild(label);
+
+function placeLabel(p) {
+  const w = p.w * p.scale, h = p.h * p.scale;
+  label.textContent = p.price;
+  label.style.left = (p.cx - w / 2) + 'px';
+  label.style.top = (p.cy - h / 2) + 'px';
+  label.style.width = w + 'px';
+  label.style.height = h + 'px';
+  // big text, sized to the image it replaces
+  label.style.fontSize = Math.max(40, Math.min(w / (p.price.length * 0.6), h * 0.6)) + 'px';
+  label.style.zIndex = 99999;   // always readable, above other images
+  label.style.display = 'flex';
+}
+function showPrice(p) {
+  if (!showPrices) return;
+  hidePrice();
+  hovered = p;
+  p.el.classList.add('priced');
+  placeLabel(p);
+}
+function hidePrice() {
+  if (hovered) hovered.el.classList.remove('priced');
+  hovered = null;
+  label.style.display = 'none';
+}
+toggle.addEventListener('click', () => {
+  showPrices = !showPrices;
+  toggle.setAttribute('aria-pressed', showPrices);
+  if (!showPrices) hidePrice();
+});
 
 // Pick a random spot anywhere on the screen (image stays fully visible).
 // If `awayFrom` is given, only accept spots far from that point.
@@ -79,7 +147,7 @@ function randomSpot(w, h, awayFrom) {
 
 function addImage(cx, cy, animate, awayFrom) {
   if (!pool.length) return null;
-  const [file, iw, ih] = ALL[pool.pop()];
+  const [file, iw, ih, price] = ALL[pool.pop()];
   const [w, h] = baseSize(iw, ih, file);
   if (cx == null) [cx, cy] = randomSpot(w, h, awayFrom);
   const el = document.createElement('img');
@@ -88,7 +156,9 @@ function addImage(cx, cy, animate, awayFrom) {
   el.draggable = false;
   if (animate) el.className = 'new';
   el.style.zIndex = zTop++;
-  const p = { el, cx, cy, scale: 1, w, h };
+  const p = { el, cx, cy, scale: 1, w, h, price };
+  el.addEventListener('pointerenter', () => showPrice(p));
+  el.addEventListener('pointerleave', () => { if (hovered === p && !(drag && drag.p === p)) hidePrice(); });
   render(p);
   board.appendChild(el);
   placed.push(p);
