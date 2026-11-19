@@ -54,7 +54,7 @@ function render(p) {
 // Find an open spot: try random points and keep the one farthest from other images.
 function openSpot(w, h) {
   const pad = 20;
-  let best = null, bestScore = -1;
+  let best = [innerWidth / 2, innerHeight / 2], bestScore = -Infinity;
   for (let t = 0; t < 60; t++) {
     const cx = pad + w / 2 + Math.random() * Math.max(1, innerWidth - w - pad * 2);
     const cy = pad + h / 2 + Math.random() * Math.max(1, innerHeight - h - pad * 2);
