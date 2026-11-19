@@ -117,6 +117,9 @@ function showPrice(p) {
   hovered = p;
   p.el.classList.add('priced');
   placeLabel(p);
+  // With prices on, hovering (not dragging) is what brings in two new images.
+  // Each image only does this the first time it's hovered, so the page doesn't flood.
+  if (!p.triggered && !drag) { p.triggered = true; addPair(); }
 }
 function hidePrice() {
   if (hovered) hovered.el.classList.remove('priced');
@@ -137,16 +140,21 @@ function randomSpot(w, h, awayFrom) {
     pad + w / 2 + Math.random() * Math.max(1, innerWidth - w - pad * 2),
     pad + h / 2 + Math.random() * Math.max(1, innerHeight - h - pad * 2)
   ];
-  if (!awayFrom) return rand();
-  const minDist = Math.hypot(innerWidth, innerHeight) * 0.45;
-  let far = rand(), farD = 0;
+  // never drop a new image right under the mouse (it would instantly count as hovered)
+  const underMouse = s => Math.abs(s[0] - mouse[0]) < w / 2 + 10 && Math.abs(s[1] - mouse[1]) < h / 2 + 10;
+  const minDist = awayFrom ? Math.hypot(innerWidth, innerHeight) * 0.45 : 0;
+  let fallback = null, farD = -1;
   for (let t = 0; t < 80; t++) {
-    const s = rand(), d = Math.hypot(s[0] - awayFrom[0], s[1] - awayFrom[1]);
-    if (d >= minDist) return s;            // first random spot that is far enough
-    if (d > farD) { farD = d; far = s; }   // otherwise remember the farthest one
+    const s = rand();
+    if (underMouse(s)) continue;
+    const d = awayFrom ? Math.hypot(s[0] - awayFrom[0], s[1] - awayFrom[1]) : 0;
+    if (d >= minDist) return s;                 // first random spot that is far enough
+    if (d > farD) { farD = d; fallback = s; }   // otherwise remember the farthest one
   }
-  return far;
+  return fallback || rand();
 }
+let mouse = [-9999, -9999];
+window.addEventListener('pointermove', e => { mouse = [e.clientX, e.clientY]; }, { passive: true });
 
 function addImage(cx, cy, animate, awayFrom) {
   if (!pool.length) return null;
@@ -176,6 +184,12 @@ function addWithShrink(awayFrom) {
   return addImage(null, null, true, awayFrom);
 }
 
+// Two new images, placed far apart from each other.
+function addPair() {
+  const a = addWithShrink();
+  addWithShrink(a ? [a.cx, a.cy] : null);
+}
+
 // One drag at a time, tracked on the whole window so fast moves never "drop" the image.
 let drag = null;   // { p, startX, startY, offX, offY, moved }
 function makeDraggable(p) {
@@ -198,10 +212,8 @@ function endDrag() {
   const { p, moved } = drag;
   drag = null;
   p.el.classList.remove('dragging');
-  if (moved) {                       // two new images per move, far apart
-    const a = addWithShrink();
-    addWithShrink(a ? [a.cx, a.cy] : null);
-  }
+  // Prices off: moving an image adds two new ones. Prices on: hovering does that instead.
+  if (moved && !showPrices) addPair();
 }
 window.addEventListener('pointerup', endDrag);
 window.addEventListener('pointercancel', endDrag);
