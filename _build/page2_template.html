@@ -36,7 +36,7 @@ shuffle(pool);
 
 // Every image gets roughly the same visual area, based on the window size.
 function baseSize(w, h) {
-  const s = Math.min(innerWidth, innerHeight) * 0.3;
+  const s = Math.min(innerWidth, innerHeight) * 0.27;
   let bw = s * Math.sqrt(w / h), bh = s * Math.sqrt(h / w);
   const maxH = innerHeight * 0.55;
   if (bh > maxH) { bw *= maxH / bh; bh = maxH; }
@@ -95,33 +95,32 @@ function addWithShrink() {
   addImage(null, null, true);
 }
 
+// One drag at a time, tracked on the whole window so fast moves never "drop" the image.
+let drag = null;   // { p, startX, startY, offX, offY, moved }
 function makeDraggable(p) {
-  let startX, startY, offX, offY, moved = false;
   p.el.addEventListener('pointerdown', e => {
     e.preventDefault();
-    p.el.setPointerCapture(e.pointerId);
     p.el.classList.add('dragging');
     p.el.style.zIndex = zTop++;
-    startX = e.clientX; startY = e.clientY;
-    offX = e.clientX - p.cx; offY = e.clientY - p.cy;
-    moved = false;
+    drag = { p, startX: e.clientX, startY: e.clientY, offX: e.clientX - p.cx, offY: e.clientY - p.cy, moved: false };
   });
-  p.el.addEventListener('pointermove', e => {
-    if (!p.el.hasPointerCapture(e.pointerId)) return;
-    if (!moved && Math.hypot(e.clientX - startX, e.clientY - startY) < 4) return;
-    moved = true;
-    p.cx = e.clientX - offX; p.cy = e.clientY - offY;
-    render(p);
-  });
-  const end = e => {
-    if (!p.el.hasPointerCapture(e.pointerId)) return;
-    p.el.releasePointerCapture(e.pointerId);
-    p.el.classList.remove('dragging');
-    if (moved) { addWithShrink(); addWithShrink(); }   // two new images per move
-  };
-  p.el.addEventListener('pointerup', end);
-  p.el.addEventListener('pointercancel', end);
 }
+window.addEventListener('pointermove', e => {
+  if (!drag) return;
+  if (!drag.moved && Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) < 4) return;
+  drag.moved = true;
+  drag.p.cx = e.clientX - drag.offX; drag.p.cy = e.clientY - drag.offY;
+  render(drag.p);
+});
+function endDrag() {
+  if (!drag) return;
+  const { p, moved } = drag;
+  drag = null;
+  p.el.classList.remove('dragging');
+  if (moved) { addWithShrink(); addWithShrink(); }   // two new images per move
+}
+window.addEventListener('pointerup', endDrag);
+window.addEventListener('pointercancel', endDrag);
 
 // First load: a loose, overlapping cluster in the middle, like the reference.
 function startLayout() {
