@@ -6,7 +6,8 @@
 <title>Vogue Gifts Under $100</title>
 <style>
   html, body { margin: 0; height: 100%; background: #fff; overflow: hidden; }
-  #board { position: fixed; inset: 0; touch-action: none; user-select: none; -webkit-user-select: none; }
+  /* solid white so the inverted price text has something to invert in empty areas */
+  #board { position: fixed; inset: 0; background: #fff; touch-action: none; user-select: none; -webkit-user-select: none; }
   #board img {
     position: absolute; cursor: grab; -webkit-user-drag: none;
     transition: width .25s ease, height .25s ease, left .25s ease, top .25s ease;
