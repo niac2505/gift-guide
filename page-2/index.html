@@ -34,9 +34,16 @@ let zTop = 1;
 function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 shuffle(pool);
 
+// Clothing (garments, shoes, hats, gloves, scarves, socks) shows a bit bigger than other items.
+const CLOTHING = new Set(['align-pants','cable-knit-gloves','cosy-slipper-socks','fringed-tie-style-scarf',
+  'gardana-clogs','lined-leather-gloves','met-logo-sweatshirt','pajama-set','river-mittens','scuff-slippers',
+  'slim-crew-sweater','speedcat-sneakers','square-scarf','stripe-pajama-set','the-cashmere-beanie',
+  'the-collegiate-socks','the-crack-of-dawn-hat','the-original-sweater','the-yves-socks']);
+const CLOTHING_SCALE = 1.2;   // 20% bigger
+
 // Every image gets roughly the same visual area, based on the window size.
-function baseSize(w, h) {
-  const s = Math.min(innerWidth, innerHeight) * 0.27;
+function baseSize(w, h, file) {
+  const s = Math.min(innerWidth, innerHeight) * 0.27 * (CLOTHING.has(file) ? CLOTHING_SCALE : 1);
   let bw = s * Math.sqrt(w / h), bh = s * Math.sqrt(h / w);
   const maxH = innerHeight * 0.55;
   if (bh > maxH) { bw *= maxH / bh; bh = maxH; }
@@ -73,7 +80,7 @@ function randomSpot(w, h, awayFrom) {
 function addImage(cx, cy, animate, awayFrom) {
   if (!pool.length) return null;
   const [file, iw, ih] = ALL[pool.pop()];
-  const [w, h] = baseSize(iw, ih);
+  const [w, h] = baseSize(iw, ih, file);
   if (cx == null) [cx, cy] = randomSpot(w, h, awayFrom);
   const el = document.createElement('img');
   el.src = 'images/' + file + '.png';
