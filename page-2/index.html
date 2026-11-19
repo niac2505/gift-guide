@@ -39,7 +39,9 @@
     position: absolute; display: none; pointer-events: none;
     align-items: center; justify-content: center; text-align: center;
     font-family: "Didot", "Bodoni 72", "Bodoni MT", "Times New Roman", serif;
-    font-weight: 700; color: #000; line-height: 1; letter-spacing: -0.02em; white-space: nowrap;
+    font-weight: 700; line-height: 1; letter-spacing: -0.02em; white-space: nowrap;
+    /* inverts whatever is behind it: black on white, white on black, opposite colors on images */
+    color: #fff; mix-blend-mode: difference;
   }
 </style>
 </head>
