@@ -117,9 +117,8 @@ function showPrice(p) {
   hovered = p;
   p.el.classList.add('priced');
   placeLabel(p);
-  // With prices on, hovering (not dragging) is what brings in two new images.
-  // Each image only does this the first time it's hovered, so the page doesn't flood.
-  if (!p.triggered && !drag) { p.triggered = true; addPair(); }
+  // With prices on, every hover (not dragging) brings in two new images.
+  if (!drag) addPair();
 }
 function hidePrice() {
   if (hovered) hovered.el.classList.remove('priced');
