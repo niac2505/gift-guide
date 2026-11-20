@@ -214,6 +214,8 @@
   const engine = Engine.create({ enableSleeping: true });
   engine.gravity.y = 1.1;
   const heap = document.getElementById('heap');
+  const pkgs = [...document.querySelectorAll('img.pkg')];
+  const pkgCount = pkgs.length;
   const items = [];          // { body, el, w, h, t0, fromW, fromH }
   let walls = [];
 
@@ -234,10 +236,11 @@
   });
 
   // size a package takes in the pile: small enough that ~100 of them make a heap, not a wall
+  // sized from the screen area so that all of them together fill roughly the bottom half
   function pileSize(w, h) {
-    const s = Math.max(56, Math.min(130, Math.min(innerWidth, innerHeight) * 0.1)) * (0.8 + Math.random() * 0.45);
-    const r = w / h;
-    return r >= 1 ? [s, s / r] : [s * r, s];
+    const area = innerWidth * innerHeight * 0.27 / Math.max(1, pkgCount) * (0.7 + Math.random() * 0.7);
+    const r = Math.max(0.5, Math.min(2, w / h));
+    return [Math.sqrt(area * r), Math.sqrt(area / r)];
   }
 
   function drop(img) {
@@ -263,7 +266,7 @@
   }
 
   // a photo drops once it has scrolled up past the middle of the screen
-  const pkgs = [...document.querySelectorAll('img.pkg')];
+
   let lastY = scrollY;
   function check() {
     const down = scrollY > lastY;
