@@ -9,7 +9,7 @@ def item(i):
     return f'<li>{name}<br>\n{e(i["desc"])}</li>' if i.get('desc') else f'<li>{name}</li>'
 os.makedirs(f'{out}/refinery29',exist_ok=True)
 # home
-links='\n'.join(f'<li><a href="{h}">{t}</a></li>' for h,t in [('refinery29/the-art-of-giving.html','Refinery29'),('page-2/index.html','Vogue Gifts Under $100'),('page-3/index.html','Forbes Holiday Gift Guide'),('page-4/index.html','The Atlantic Gift Guide'),('page-5/index.html','Page 5')])
+links='\n'.join(f'<li><a href="{h}">{t}</a></li>' for h,t in [('refinery29/the-art-of-giving.html','Refinery29'),('page-2/index.html','Vogue Gifts Under $100'),('page-3/index.html','Forbes Holiday Gift Guide'),('page-4/index.html','The Atlantic Gift Guide'),('page-5/index.html','The Strategist Gift Hall of Fame')])
 open(f'{out}/index.html','w').write(page('Home',f'<h1>Home</h1>\n<ul>\n{links}\n</ul>',0))
 # page 2 is the Vogue collage (built from _build/page2_template.html)
 _t=os.path.join(os.path.dirname(os.path.abspath(__file__)),'page2_template.html')
@@ -58,7 +58,29 @@ for s in _A:
     _secs.append(f'  <section class="gifts" id="{_slug(s["t"])}">\n    <h2>{_e(s["t"])}</h2>\n    <div class="grid">\n' + '\n'.join('      '+c for c in cards) + '\n    </div>\n  </section>')
 os.makedirs(f'{out}/page-4',exist_ok=True)
 open(f'{out}/page-4/index.html','w',encoding='utf-8').write(open(os.path.join(_b,'page4_template.html'),encoding='utf-8').read().replace('__NAV__',_nav).replace('__JUMP__',_jump).replace('__SECTIONS__','\n'.join(_secs)))
-for n in range(5,6):
+# page 5 is the Strategist Gift Hall of Fame with every product photo swapped for a delivered-package photo
+# (built from _build/page5_template.html + strategist_gifts.json + package_photos.json + strategist_intro.txt)
+_S=_json.load(open(os.path.join(_b,'strategist_gifts.json'),encoding='utf-8'))
+_P=_json.load(open(os.path.join(_b,'package_photos.json'),encoding='utf-8'))
+_order=list(range(len(_P)))
+import random as _random
+_random.Random(7).shuffle(_order)          # same mix every build
+_pk=lambda i:_P[_order[i%len(_P)]]
+def _img(p,cls='pkg'):
+    return f'<img class="{cls}" src="images/{p["file"]}" width="{p["w"]}" height="{p["h"]}" alt="{_e(p["title"] or "Delivered package")}">'
+_cards=[]
+for i,x in enumerate(_S):
+    badge=f'<span class="badge">{_e(x["badge"])}</span>' if x['badge'] else ''
+    price=f'<div class="price">{_e(x["price"])}' + (f'<span class="orig">{_e(x["orig"])}</span><span class="off">{_e(x["off"])}</span>' if x['orig'] else '') + '</div>'
+    buys=''.join(f'<a href="{_e(u)}" target="_blank" rel="noopener sponsored">{_e(t)}</a>' for t,u in x['buys'])
+    read=f'<a class="read" href="{_e(x["read"])}">Read Story</a>' if x['read'] else ''
+    _cards.append(f'    <div class="item"><div class="photo">{_img(_pk(i+1))}{badge}</div><h2>{_e(x["name"])}</h2>{price}<div class="buys">{buys}</div>{read}</div>')
+_it=open(os.path.join(_b,'strategist_intro.txt'),encoding='utf-8').read().split('-----',1)[-1].strip()
+_intro='\n'.join(f'    <p>{_e(p.strip())}</p>' for p in _re.split(r'\n\s*\n',_it) if p.strip())
+_cred='<br>'.join(f'{_e(p["file"])}: <a href="{_e(p["landing"])}">{_e(p["title"] or "Untitled")}</a> by {_e(p["creator"] or "unknown")}, <a href="{_e(p["license_url"] or "")}">CC {_e(p["license"].upper())} {_e(p["license_version"] or "")}</a>' for p in _P)
+os.makedirs(f'{out}/page-5',exist_ok=True)
+open(f'{out}/page-5/index.html','w',encoding='utf-8').write(open(os.path.join(_b,'page5_template.html'),encoding='utf-8').read().replace('__LEDE__',_img(_pk(0))).replace('__INTRO__',_intro).replace('__GRID__','\n'.join(_cards)).replace('__CREDITS__',_cred))
+for n in range(6,6):
     os.makedirs(f'{out}/page-{n}',exist_ok=True)
     open(f'{out}/page-{n}/index.html','w').write(page(f'Page {n}',f'<p><a href="../index.html">Home</a></p>\n<h1>Page {n}</h1>\n<p>Coming soon.</p>',1))
 # hub

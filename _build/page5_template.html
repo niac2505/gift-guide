@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Strategist Gift Hall of Fame</title>
+<style>
+  /* Same layout as the Strategist's Gift Hall of Fame; every product photo is swapped for a photo of a delivered package */
+  :root { --serif: Georgia, "Times New Roman", serif; --display: "Cooper Black", "Cooper Std", Georgia, serif; --mono: "Courier New", ui-monospace, monospace; }
+  body { margin: 0; background: #fff; color: #000; font-family: var(--serif); }
+  a { color: inherit; }
+
+  /* site bars */
+  .sites { display: flex; justify-content: space-between; gap: 16px; padding: 8px 24px; border-bottom: 1px solid #ddd; font: 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+  .sites span + span::before { content: "|"; margin: 0 8px; color: #999; }
+  .masthead { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 14px 24px 10px; }
+  .masthead .home { font: 12px var(--mono); }
+  .logo { font: 400 40px var(--display); letter-spacing: -1px; text-align: center; line-height: 1; }
+  .logo small { display: block; font: italic 13px var(--serif); letter-spacing: 0; }
+  .search { justify-self: end; width: 200px; padding: 6px 12px; border: 1px solid #000; border-radius: 20px; font: 12px var(--mono); color: #777; }
+  .cats { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 0; padding: 8px 24px; border-top: 1px solid #000; border-bottom: 1px solid #000; font: 12px var(--mono); }
+  .cats span + span::before { content: "|"; margin: 0 10px; color: #999; }
+
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+  /* article header: text panel left, lede photo right */
+  .lede { display: grid; grid-template-columns: 1fr 570px; gap: 0; margin-top: 36px; }
+  .lede-text { border-left: 8px solid #000; padding: 120px 40px 40px 40px; }
+  .rubric { font: 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+  .lede h1 { display: inline; margin: 0; font: 500 48px/1.08 var(--display); letter-spacing: -1px; }
+  .lede .teaser { display: inline; font: 300 48px/1.08 var(--display); letter-spacing: -1px; color: #000; opacity: .82; }
+  .lede .hed { margin: 16px 0 0; }
+  .byline { margin-top: 32px; font: 12px/1.5 var(--mono); }
+  .lede-photo { aspect-ratio: 570 / 712; overflow: hidden; background: #f3f3f3; }
+  .lede-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (max-width: 900px) { .lede { grid-template-columns: 1fr; } .lede-text { padding-top: 40px; } .lede h1, .lede .teaser { font-size: 36px; } }
+
+  .body { max-width: 600px; margin: 36px auto 0; font-size: 18px; line-height: 1.6; }
+  .disclaimer { font: 12px/1.5 var(--mono); color: #555; }
+  .updated { font: 12px var(--mono); color: #555; }
+  .body p { margin: 0 0 1em; }
+
+  /* product grid */
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 40px 30px; margin: 44px 0 80px; }
+  @media (max-width: 1100px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 860px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 600px)  { .grid { grid-template-columns: repeat(2, 1fr); gap: 32px 16px; } .sites { display: none; } .search { display: none; } }
+  .item { display: flex; flex-direction: column; }
+  .item .photo { position: relative; aspect-ratio: 1; }
+  .item .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .badge { position: absolute; left: 6px; top: 6px; padding: 3px 6px; background: #ffef3a; font: 10px var(--mono); text-transform: uppercase; letter-spacing: .05em; }
+  .item h2 { margin: 12px 0 0; font: 400 17px/1.25 var(--display); letter-spacing: -.1px; }
+  .price { margin-top: 6px; font: 18px var(--mono); letter-spacing: -.5px; }
+  .price .orig { margin-left: 6px; font-size: 13px; color: #777; text-decoration: line-through; }
+  .price .off { margin-left: 6px; font-size: 13px; color: #c4161c; }
+  .buys { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .buys a { display: block; padding: 8px 6px; border: 1px solid #000; text-align: center; text-decoration: none; font: 12px var(--mono); text-transform: uppercase; letter-spacing: 1px; }
+  .read { margin-top: 10px; font: 15px var(--mono); }
+
+  .credits { max-width: 1100px; margin: 0 auto; padding: 24px 20px 260px; border-top: 1px solid #ddd; font: 11px/1.6 var(--mono); color: #555; }
+  .credits h3 { font: 12px var(--mono); text-transform: uppercase; letter-spacing: .1em; color: #000; }
+
+  /* ---- falling packages ---- */
+  .pkg.fallen { visibility: hidden; }          /* the spot it fell from stays empty */
+  #heap { position: fixed; inset: 0; pointer-events: none; z-index: 50; overflow: hidden; }
+  #heap img { position: absolute; left: 0; top: 0; display: block; object-fit: cover; will-change: transform;
+              box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+</style>
+</head>
+<body>
+<div class="sites"><div><span>Intelligencer</span><span>The Cut</span><span>Vulture</span><span>The Strategist</span><span>Curbed</span><span>Grub Street</span></div><div>New York Magazine</div></div>
+<header class="masthead">
+  <a class="home" href="../index.html">Home</a>
+  <div class="logo"><small>the</small>Strategist</div>
+  <div class="search">Find a product</div>
+</header>
+<nav class="cats"><span>Gift Guides</span><span>Sales</span><span>Beauty</span><span>Home</span><span>Kitchen</span><span>Style</span><span>Travel</span><span>Tech</span><span>Wellness</span><span>Kids+Baby</span></nav>
+
+<div class="wrap">
+  <section class="lede">
+    <div class="lede-text">
+      <div class="rubric">Gifts</div>
+      <div class="hed"><h1>The Strategist Gift Hall of Fame</h1> <span class="teaser">A greatest-hits collection of the most giftable items we’ve written about.</span></div>
+      <div class="byline">By Katherine Gillespie, a writer at the Strategist covering outdoors and travel gear.</div>
+    </div>
+    <div class="lede-photo">__LEDE__</div>
+  </section>
+
+  <div class="body">
+    <p class="disclaimer">Every product is independently selected by (obsessive) editors. Things you buy through our links may earn us a commission.</p>
+    <p class="updated">Updated June 10, 2026</p>
+__INTRO__
+  </div>
+
+  <div class="grid">
+__GRID__
+  </div>
+</div>
+
+<footer class="credits">
+  <h3>Package photos</h3>
+  <p>All package photos are Creative Commons–licensed uploads from Flickr, found through Openverse. They are resized and cropped to fit.</p>
+  <p>__CREDITS__</p>
+</footer>
+
+<div id="heap" aria-hidden="true"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+<script>
+// As you scroll, each package photo drops out of the page, falls to the bottom of the screen
+// and piles up with the others. By the end there's a heap of boxes and mailers at the bottom.
+(function () {
+  if (!window.Matter) return;
+  const { Engine, Bodies, Body, Composite } = Matter;
+  const engine = Engine.create({ enableSleeping: true });
+  engine.gravity.y = 1.1;
+  const heap = document.getElementById('heap');
+  const items = [];          // { body, el, w, h, t0, fromW, fromH }
+  let walls = [];
+
+  function makeWalls() {
+    Composite.remove(engine.world, walls);
+    const W = innerWidth, H = innerHeight, T = 200;
+    walls = [
+      Bodies.rectangle(W / 2, H + T / 2, W * 3, T, { isStatic: true, friction: 0.8 }),     // floor = bottom of the screen
+      Bodies.rectangle(-T / 2, H / 2 - H, T, H * 4, { isStatic: true }),                  // left wall
+      Bodies.rectangle(W + T / 2, H / 2 - H, T, H * 4, { isStatic: true })                // right wall
+    ];
+    Composite.add(engine.world, walls);
+  }
+  makeWalls();
+  addEventListener('resize', () => {
+    makeWalls();
+    for (const it of items) Body.set(it.body, 'isSleeping', false);
+  });
+
+  // size a package takes in the pile: small enough that ~100 of them make a heap, not a wall
+  function pileSize(w, h) {
+    const s = Math.max(56, Math.min(130, Math.min(innerWidth, innerHeight) * 0.1)) * (0.8 + Math.random() * 0.45);
+    const r = w / h;
+    return r >= 1 ? [s, s / r] : [s * r, s];
+  }
+
+  function drop(img) {
+    img.dataset.fallen = '1';
+    const r = img.getBoundingClientRect();
+    const nw = img.naturalWidth || 4, nh = img.naturalHeight || 3;
+    const [w, h] = pileSize(nw, nh);
+    const el = new Image();
+    el.src = img.currentSrc || img.src;
+    el.alt = '';
+    el.style.width = w + 'px';
+    el.style.height = h + 'px';
+    heap.appendChild(el);
+    img.classList.add('fallen');
+    const body = Bodies.rectangle(r.left + r.width / 2, r.top + r.height / 2, w, h, {
+      friction: 0.5, frictionStatic: 0.8, restitution: 0.12, density: 0.002, chamfer: { radius: 2 }
+    });
+    Body.setVelocity(body, { x: (Math.random() - 0.5) * 6, y: 2 });
+    Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.12);
+    Composite.add(engine.world, body);
+    // starts the size it was on the page, then shrinks to its pile size while it falls
+    items.push({ body, el, w, h, t0: performance.now(), fromW: r.width, fromH: r.height });
+  }
+
+  // a photo drops once it has scrolled up past the middle of the screen
+  const pkgs = [...document.querySelectorAll('img.pkg')];
+  let lastY = scrollY;
+  function check() {
+    const down = scrollY > lastY;
+    lastY = scrollY;
+    if (!down) return;
+    const line = innerHeight * 0.45;
+    for (const img of pkgs) {
+      if (img.dataset.fallen) continue;
+      const r = img.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < line && r.top < innerHeight) drop(img);
+    }
+  }
+  addEventListener('scroll', check, { passive: true });
+
+  let last = performance.now();
+  (function frame(now) {
+    const dt = Math.min(33, now - last); last = now;
+    Engine.update(engine, dt);
+    for (const it of items) {
+      const p = it.body.position, a = it.body.angle;
+      const k = Math.min(1, (now - it.t0) / 450), e = 1 - Math.pow(1 - k, 3);
+      const sx = (it.fromW + (it.w - it.fromW) * e) / it.w, sy = (it.fromH + (it.h - it.fromH) * e) / it.h;
+      it.el.style.transform = `translate(${p.x - it.w / 2}px, ${p.y - it.h / 2}px) rotate(${a}rad) scale(${sx}, ${sy})`;
+    }
+    requestAnimationFrame(frame);
+  })(last);
+})();
+</script>
+</body>
+</html>

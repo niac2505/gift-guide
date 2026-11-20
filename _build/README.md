@@ -64,3 +64,7 @@ Gift names, prices and links are in `forbes_gifts.json`. To add the hover descri
 ## Page 4 (Atlantic gift guide) descriptions
 
 Section, title, image description, photo credit, writer and buy link for all 55 gifts are in `atlantic_gifts.json`. Paste each writer's description under its `### NN Title` line in `atlantic_descriptions.txt` (without the "— Name, Role" line, which the page adds), then rebuild.
+
+## Page 5 (Strategist Gift Hall of Fame)
+
+Product names, prices, deals, store links and "Read Story" links for all 100 gifts are in `strategist_gifts.json`. Every product photo is replaced with a Creative Commons package photo from Flickr (found through Openverse). The 59 photos are in `page-5/images/`, and their credits and licenses are in `package_photos.json` and listed at the bottom of the page. Paste the article's intro paragraphs into `strategist_intro.txt`, then rebuild. On scroll, each photo falls out of the page and piles up at the bottom of the screen, using Matter.js from cdnjs.
