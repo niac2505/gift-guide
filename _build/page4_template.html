@@ -30,15 +30,16 @@
 
   .jump { margin: 72px auto 0; text-align: center; }
   .jump h2 { margin: 0 0 22px; font: 300 24px "Didot", "Bodoni 72", var(--serif); text-transform: uppercase; letter-spacing: .02em; }
-  .jump ul { list-style: none; margin: 0 auto; padding: 0; max-width: 720px; display: grid; grid-template-columns: 1fr; gap: 14px; }   /* one link per line */
-  .jump a { font-size: 20px; font-weight: 600; color: #2c2825; text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+  .jump ul { list-style: none; margin: 0 auto; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 20px; }   /* all six in one row (wraps on narrow screens) */
+  .jump li { white-space: nowrap; }
+  .jump a { font-size: 15px; font-weight: 600; color: #2c2825; text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
 
   /* gift sections */
   section.gifts { margin-top: 96px; }
   section.gifts h2 { margin: 0 0 28px; padding-top: 16px; border-top: 1px solid #000; font: 700 14px var(--sans); color: var(--red); text-transform: uppercase; letter-spacing: .5px; }
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 30px; }
   @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 640px)  { .grid { grid-template-columns: 1fr; } h1 span { font-size: 64px; } h1 span:first-child { font-size: 34px; } .jump ul { grid-template-columns: 1fr; } }
+  @media (max-width: 640px)  { .grid { grid-template-columns: 1fr; } h1 span { font-size: 64px; } h1 span:first-child { font-size: 34px; } }
 
   .card { display: flex; flex-direction: column; }
   /* where the photo was: its text description */
