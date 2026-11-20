@@ -3,100 +3,104 @@ Paste each gift's description on the line(s) under its name. Leave a blank line 
 Blank paragraphs inside a description are fine. Then rebuild: python3 _build/build.py .  (from the website folder)
 
 ### 001 Hyperice x Nike Air Zoom Hyperslide
-
+Treat the sports lover to this innovative slide: Responsive Nike Air Zoom cushioning in the sole combines with Hyperice technology in the strap to deliver three levels of heat and vibration massage. The result? “They provide therapeutic relief for sore feet,” says Bridget Chapman, deputy sleep and wellness editor. “A great gift for athletes or anybody who spends hours standing.”
 
 ### 002 Aura Astra Frame
-
+Decked out in more than 15,000 glittering Swarovski crystals—perfect for showcasing special moments—Aura’s digital photo frame has a 12-inch LCD display, a built-in speaker, an interactive touch bar and a slim profile, at only 1.1 inches thick. In addition to holding unlimited photos and videos, family and friends can add photos to the frame from anywhere.
 
 ### 003 Dyson Airsmooth
-
+Beauty lovers will swoon for Dyson’s just-launched styling brush. “For anyone trying to re-create a frizz-free yet bouncy blowout at home, look no further than the new Dyson Airsmooth,” says Jennifer Ferrise, senior features and special projects editor. “It features PivotFlex bristles that glide easily through the hair (without snagging), drying and shaping your strands in a matter of minutes.”
 
 ### 004 Apple iPhone Duo
+One of the most coveted gifts of the year (if you can get your hands on it), Apple’s new iPhone Duo has the largest iPhone display ever, with a foldable design and a titanium frame. The 48-megapixel Dual Fusion camera system allows you to snap photos from front to back, and performance comes courtesy of a vapor-cooled A20 Pro chip.
 
 
 ### 005 Dorsey Cecilia Earrings
-
+Inspired by the Georgian era, these sophisticated white moissanite earrings come in four carat sizes—ideal for any giftee, whether she prefers an understated look or loves bold, notice-me pieces. A low-profile latch-back closure provides a seamless fit, and for further customization, you have the choice of 18k gold vermeil or sterling silver.
 
 ### 006 Nintendo Switch 2 + Nintendo Switch Sports Resorts Bundle
-
+“The Nintendo Switch 2 bundle is a great option for families who want to play together,” says Rebecca Isaacs, tech and electronics editor. “It comes with a library of games, and in particular, the Sports Resort bundle includes a dozen fun sports-related games so you can box, bowl and practice your archery skills right in your living room.”
 
 ### 007 Quince Cashmere Lined Leather Gloves
-
+“Winter gloves are always an appreciated gift, but this pair from Quince goes the extra mile,” says senior features and special projects editor Jennifer Ferrise. “Made with soft lambskin leather and lined in luxe, sustainably sourced cashmere, you can’t beat the warmth or the $50 price tag. Choose from three colors, and they come in men’s sizes, too.”
 
 ### 008 Mondo Robotics Beni
-
+“I have been on a mission for years to find the softest throw, and the Comfrt Dreamer Blanket just knocked my leading pick out of the park,” says Amy Moran, senior home and kitchen editor. “It is silky soft, so comforting and easily the most sought-after blanket in our home.” Choose from four sizes and dozens of color options.
 
 ### 009 Comfrt Dreamer Blanket
-
+“The Beni robot can capture hands-free video for content creators with a 90-minute battery life—much longer than the average drone—and it also is just plain cute,” says Rebecca Isaacs, tech and electronics editor. “It can do a couple of tricks to impress friends, but its main draw is that it can follow you via voice commands and hand gestures.”
 
 ### 010 Prada Hydrating Lip Balm
-
+Delivering up to 24 hours of moisture, Prada’s hydrating lip balm reacts with the wearer’s natural pH for a personalized custom finish. It’s designed to strengthen the lip barrier, too. Another luxurious touch: The balm comes in a gorgeous silver-toned Prada case that will thrill any fashion or beauty devotee.
 
 ### 011 Ray-Ban Meta Audio Clubmaster Glasses
-
+Delighting the gadget lover in your life is easy with these stylish, camera-free frames that come with an array of audio features. The glasses have open-ear speakers and six microphones, allowing the wearer to listen to music, podcasts and news updates. They’re also an AI assistant: Just ask Meta to set reminders, access your schedule and more.
 
 ### 012 Tuckernuck Cashmere Knot Button Phoebe Cardigan
-
+“Made from 100% cashmere, this soft Tuckernuck cardigan has cashmere-covered buttons that give it a vintage feel, while a monogram makes it personal,” says Micaela English, fashion and beauty writer. “I’d gift it to my mother-in-law or one of my closest friends—it’s special, and something they’ll still reach for long after the holidays.”
 
 ### 013 Ghia Original Apéritif
-
+A nonalcoholic drink in a beautiful, giftable bottle, Ghia’s Original Apéritif is much like an Italian amaro. Notes of orange, lemon balm and elderflower combine with Japanese yuzu to give it a taste profile that’s both bright and bitter. Pour one part Ghia and three parts bubbles—like sparkling water or tonic—into an ice-filled glass, then sit back and relax.
 
 ### 014 Louis Vuitton Horizon 55 Suitcase
-
+Innovation and lightness describe this statement-making suitcase—sure to be a hit with the stylish jet-setter on your list. “Dreamed up by famed industrial designer Marc Newson, the carry-on has a flat interior and a large capacity to hold belongings for a short getaway,” says Jennifer Ferrise, senior features and special projects editor. “Get it monogrammed for a truly luxurious gift.”
 
 ### 015 Caraway 10-Cup Coffee Maker
-
+“The minimal, chic design of Caraway’s new coffee maker is even better in person—but it’s not all looks,” says Fran Sales, commerce writer. “Its materials are high-quality, especially the fully plastic-free internal brew path—water touches only glass and stainless steel from start to finish. I also love that the single-dial operation is intentionally simple—no apps or programming required.”
 
 ### 016 Rhode Highlight Milk
-
+Add some shimmer to the holidays with a cult-favorite luminizer that delivers a lit-from-within glow. “I love the Rhode Highlight Milk because it adds a little sparkle without looking like makeup,” says Micaela English, fashion and beauty writer. “Gift it to a teen just dipping her toe into beauty, and you’re instantly the cool one.”
 
 ### 017 Solo Stove S'mores Bundle
-
+No campfire is necessary with this S’mores Bundle from Solo Stove: A sturdy concrete and metal fire bowl is the centerpiece of this kit, safe for indoor or outdoor use. The set includes smokeless gel fuel, four skewers, an ingredient tray and a s’mores recipe book for making the perfect dessert, no matter the time of year.
 
 ### 018 Vacanza Cap Ferrat Eau De Parfum
-
+“Created by Frank Voelkl, the perfumer behind cult favorites like Le Labo Santal 33, Vacanza’s Cap Ferrat has a fresh, sophisticated scent that’s beautiful when worn alone or layered with deeper notes,” says deputy editor Jane Sung. “It’s topped with a handcrafted natural stone cap that doubles as a room diffuser when you spritz a little fragrance onto it.”
 
 ### 019 Pistakio The "Cream" And "Crunch" Duo
-
+"The pistachio nut has taken over, evidenced by the ever-viral Dubai chocolate, ultra-luxurious pistachio milk lattes and green-hued pistachio cookie recipes galore across the internet,” says Brinda Ayer, editorial director. “Pistakio's duo of pistachio creams are for fans who are equal-opportunity crunchy and creamy appreciators. Slather on toast, heap onto oatmeal or just eat it straight from a spoon."
 
 ### 020 NeeDoh Nice Cube
-
+“Squishy toys are huge, and gifting a kid an authentic NeeDoh will be the highlight of their holiday,” says Alicia Betz, baby and kids gear writer. “They love to squish and collect them, and they’re truly a hit with kids of all ages, from elementary-schoolers to teens.”
 
 ### 021 John Derian Green Grapes Ornament
+“I like a host gift that isn’t the usual bottle of wine,” says Micaela English, fashion and beauty writer. “A John Derian ornament feels festive, and I always add a note about the symbolism behind it: Grapes represent abundance and good fortune. Consider it a shimmering little omen for 2027.”
 
 
 ### 022 Amazon Kindle Paperwhite Signature Edition
+“The new Amazon Kindle Paperwhite features a luxurious aluminum back plate that allows you to magnetically connect Amazon-branded cases, including the Kindle Page Turn Cover,” says Rebecca Isaacs, tech and electronics editor. “It turns pages 30% faster, and the enhanced contrast makes the screen brighter and the text crisper.”
 
 
 ### 023 Strathberry Mosaic Nano
-
+Impeccably chic and versatile, Strathberry’s Mosaic Nano bag can be carried by its top handle or worn as a crossbody with its detachable, adjustable strap. Choose from 100% grain calfskin leather or Italian cow suede—plus, it comes in a whopping 15 colors to suit any recipient’s vibe. Opt to add a leather tag and personalize it with your giftee’s initials.
 
 ### 024 Raaka Chocolate Library Gift Box
-
+“I’ve tried a lot of chocolate brands in my life, and Raaka always remains one I return to,” says Monica Petrucci, home and kitchen editor. “Its unroasted, single-origin chocolate is worth splurging on, and that’s what makes this library box the perfect gift. It includes eight of the brand’s popular bars, from classic Pink Sea Salt to unique Bananas Foster.”
 
 ### 025 Stapelstein Wonder Edition Rainbow Set
-
+Let kids’ imaginations run wild by giving them an entire limited-edition set of Wonder Editions: one balance board and six originals, all perfect for balancing on, building with, sitting on and any number of activities, depending on where their creativity takes them. Each one is made from lightweight, durable expandable polypropylene, usable both indoors and out.
 
 ### 026 Fossil Raquel Three Hand Date Stainless Steel Watch
-
+A sleek, subtle wristwatch is a classic gift that never goes out of style. Inspired by vintage cocktail watches, the Raquel comes in nine color combos—including classic gold, rose gold and black—and looks right at home with any outfit, from a t-shirt and jeans to a cocktail dress.
 
 ### 027 Sonos Ace Ultra
-
+Audiophiles will love Sonos’ new headphones: Ten microphones filter out noise, and even with ANC on, you get 35 hours of listening time. For full immersion in music and movies, the brand tapped Grammy- and Oscar-winning engineers to tune the headphones’ driver. Plus, just one press of a button delivers what’s playing on your speakers to the headphones and back again.
 
 ### 028 Lodge Custom Engraved Text Skillet
-
+“Thoughtful, unexpected, beautiful, useful—this gift checks all the boxes,” says Karen Tietjen, senior commerce optimization strategist. “Choose a design, font and text to turn this gorgeous cast iron pan into a one-of-a-kind gift. I received one as a housewarming gift with our new address and the year, and it felt so special.”
 
 ### 029 Therabody Theragun Mini
+Therabody’s lightest massage gun, the Theragun Mini, is now available in a slew of new colors. The brand’s Y2K Collection offers five bold hues, powered by the same technology that helps relieve aches in a flash. “It’s small yet delivers the most power of all the mini massagers we tested,” says Jennifer Ferrise, senior features and special projects editor.
 
 
 ### 030 Algae Cooking Club Musashi's Smoked Tomato Oil
-
+Chef Musashi Osaki brings his excellent taste to this delicious collaboration with Algae Cooking Club, which produces sustainable oil made from microalgae. “With a high smoke point and mild flavor, Algae Cooking Club's oils are perfect for sautéing, seasoning and dipping, and this earthy tomato-flavored version brings a just-grilled vibe to everything it touches," says editorial director Brinda Ayer.
 
 ### 031 MoMA Artists Kids’ Book Collection
-
+Start kids’ art education early with the Museum of Modern Art’s collection of six children’s books, each celebrating a world-renowned artist. Young readers will learn about the lives, work and influences of Henri Matisse, Yayoi Kusama, Shahzia Sikander, Jacob Lawrence, Edgar Degas and Anni Albers through text and vivid illustrations.
 
 ### 032 Yves Saint Laurent Make Me Blush Cream Blush
-
+Packaged in a chic quilted compact, this cream blush comes in six flattering colors. “After years of being a powder blush devotee, I’ve finally found a cream blush that nails the effortless but dewy glow that’s so hard to create,” says Jennifer Ferrise, senior features and special projects editor. “Even better, it lasts all day.”
 
 ### 033 Skoot SkootCase
 

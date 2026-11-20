@@ -7,17 +7,19 @@
 <style>
   /* Same layout and hierarchy as the Forbes Vetted gift guide, with every image removed */
   body { margin: 0; background: #fff; color: #000; font: 16px/1.5 Helvetica, Arial, sans-serif; }
+  /* one sans-serif typeface for everything, including form controls */
+  button, select, input { font-family: inherit; }
   a { color: inherit; }
   .wrap { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
-  #home { display: inline-block; margin: 18px 0 0; font: 14px Times, serif; }
+  #home { display: inline-block; margin: 18px 0 0; font-size: 14px; }
 
   /* Article header */
   .crumbs { margin: 22px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
   .crumbs span + span::before { content: "›"; margin: 0 10px; font-weight: 400; }
   .head { max-width: 760px; margin: 48px auto 0; text-align: center; }
   .year { display: inline-block; background: #c4161c; color: #fff; font-size: 12px; font-weight: 700; padding: 1px 7px; }
-  .kicker { margin: 14px 0 0; font: 30px/1.1 "Didot", "Bodoni 72", Georgia, serif; }
-  h1 { margin: 2px 0 0; font: 52px/1.05 "Didot", "Bodoni 72", Georgia, serif; font-weight: 400; }
+  .kicker { margin: 14px 0 0; font-size: 28px; line-height: 1.1; }
+  h1 { margin: 2px 0 0; font-size: 52px; line-height: 1.05; font-weight: 700; letter-spacing: -0.01em; }
   .meta { max-width: 760px; margin: 36px auto 0; }
   .disclosure { font-size: 17px; }
   .disclosure a { font-weight: 700; }
@@ -29,7 +31,7 @@
   .controls label { position: relative; }
   .controls select {
     appearance: none; -webkit-appearance: none; min-width: 210px; padding: 12px 40px 12px 18px;
-    border: 1px solid #ccc; border-radius: 30px; background: #fff; font: 16px Helvetica, Arial, sans-serif; cursor: pointer;
+    border: 1px solid #ccc; border-radius: 30px; background: #fff; font-size: 16px; cursor: pointer;
   }
   .controls label::after { content: "⌄"; position: absolute; right: 18px; top: 7px; font-size: 18px; pointer-events: none; }
   .count-row { display: flex; justify-content: space-between; margin: 18px 0 16px; padding-top: 14px; border-top: 1px solid #ddd; font-size: 14px; }
@@ -38,22 +40,19 @@
   @media (max-width: 760px)  { .grid { grid-template-columns: repeat(2, 1fr); } h1 { font-size: 40px; } }
   @media (max-width: 480px)  { .grid { grid-template-columns: 1fr; } .wrap { padding: 0 16px; } }
 
-  .card { position: relative; display: flex; flex-direction: column; background: #f6f6f6; padding: 20px; min-height: 190px; }
+  .card { position: relative; display: flex; flex-direction: column; background: #f6f6f6; padding: 20px; }
   .card h6 { margin: 0; font-size: 19px; line-height: 1.25; font-weight: 600; }
-  .card .more { margin: 14px 0 18px; font-size: 13px; text-decoration: underline; }
+  /* the description sits right under the name, where "Read More" used to be */
+  .card .desc { margin: 12px 0 20px; font-size: 15px; line-height: 1.45; }
+  .card .desc p { margin: 0 0 .7em; }
+  .card .desc p:last-child { margin-bottom: 0; }
+  .card h6 + .shop { margin-top: 20px; }   /* cards without a description yet */
   .card .shop {
     margin-top: auto; display: block; padding: 11px 12px; background: #c4161c; color: #fff;
     text-align: center; text-decoration: none; font-size: 14px; font-weight: 700; border-radius: 3px;
   }
-  /* The hover description takes over the card, like the original's hover panel */
-  .card .quote {
-    position: absolute; inset: 0; padding: 20px; overflow: auto; background: #ebebeb;
-    font-size: 15px; line-height: 1.45; opacity: 0; pointer-events: none; transition: opacity .2s;
-  }
-  .card.has-quote:hover .quote, .card.has-quote:focus-within .quote { opacity: 1; pointer-events: auto; }
-  .card .quote .shop { position: absolute; left: 20px; right: 20px; bottom: 20px; }
 
-  .show-more { display: block; margin: 36px auto 0; padding: 12px 36px; border: 1px solid #000; border-radius: 30px; background: #fff; font: 15px Helvetica, Arial, sans-serif; cursor: pointer; }
+  .show-more { display: block; margin: 36px auto 0; padding: 12px 36px; border: 1px solid #000; border-radius: 30px; background: #fff; font-size: 15px; cursor: pointer; }
   .top { display: block; width: fit-content; margin: 18px auto 0; font-size: 13px; }
 </style>
 </head>
@@ -93,7 +92,7 @@
         <option value="high">High To Low</option>
       </select></label>
     </div>
-    <div class="count-row"><span id="count"></span><span>Hover to read more</span></div>
+    <div class="count-row"><span id="count"></span></div>
     <div class="grid" id="grid"></div>
     <button class="show-more" id="more" type="button">Show More</button>
     <a class="top" href="#home">Top</a>
@@ -121,9 +120,9 @@ function draw() {
   const all = list(), vis = all.slice(0, shown);
   grid.innerHTML = vis.map(x => {
     const shop = `<a class="shop" href="${esc(x.url)}" target="_blank" rel="noopener sponsored">${esc(x.shop)}</a>`;
-    const quote = x.description
-      ? `<div class="quote" tabindex="0">${x.description.split('\n').map(p => `<p>${esc(p)}</p>`).join('')}${shop}</div>` : '';
-    return `<article class="card${x.description ? ' has-quote' : ''}"><h6>${esc(x.name)}</h6><span class="more">Read More</span>${shop}${quote}</article>`;
+    const desc = x.description
+      ? `<div class="desc">${x.description.split('\n').map(p => `<p>${esc(p)}</p>`).join('')}</div>` : '';
+    return `<article class="card"><h6>${esc(x.name)}</h6>${desc}${shop}</article>`;
   }).join('');
   document.getElementById('count').textContent = `Showing ${vis.length} of ${all.length} gifts`;
   document.getElementById('more').style.display = vis.length < all.length ? '' : 'none';
