@@ -9,8 +9,9 @@
   /* solid white so the inverted price text has something to invert in empty areas */
   #board { position: fixed; inset: 0; background: #fff; touch-action: none; user-select: none; -webkit-user-select: none; }
   #board img {
-    position: absolute; cursor: grab; -webkit-user-drag: none;
-    transition: width .25s ease, height .25s ease, left .25s ease, top .25s ease, opacity .2s ease;
+    position: absolute; left: 0; top: 0; cursor: grab; -webkit-user-drag: none;
+    /* placed with transform (not left/top) so movement is sub-pixel smooth instead of snapping pixel to pixel */
+    transition: width .25s ease, height .25s ease, transform .25s ease, opacity .2s ease;
   }
   #board img.dragging { cursor: grabbing; transition: none; }
   #board img.new { animation: pop .35s ease-out; }
@@ -45,9 +46,10 @@
 
   /* Float mode: everything drifts and spins slowly; physics moves it every frame, so no transitions */
   body.floating #board img { transition: opacity .2s ease; }
+  body.floating #board img, body.floating #board .name { will-change: transform; backface-visibility: hidden; }
   /* Product names as black blocks with white text (only shown in float mode) */
   #board .name {
-    position: absolute; display: none; white-space: nowrap; cursor: grab;
+    position: absolute; left: 0; top: 0; display: none; white-space: nowrap; cursor: grab;
     background: #000; color: #fff; padding: 1px 6px 3px;
     font: 18px Times, "Times New Roman", serif; line-height: 1.1;
   }
@@ -120,9 +122,7 @@ function render(p) {
     p.el.style.width = w + 'px';
     p.el.style.height = h + 'px';
   }
-  p.el.style.left = (p.cx - w / 2) + 'px';
-  p.el.style.top = (p.cy - h / 2) + 'px';
-  p.el.style.transform = p.angle ? 'rotate(' + p.angle + 'rad)' : '';
+  p.el.style.transform = 'translate3d(' + (p.cx - w / 2) + 'px,' + (p.cy - h / 2) + 'px,0) rotate(' + (p.angle || 0) + 'rad)';
   if (hovered === p) placeLabel(p);
 }
 
@@ -140,9 +140,9 @@ function placeLabel(p) {
   if (floating) {
     // black block with white text, centered on the image and turned with it
     label.classList.add('block');
-    label.style.left = p.cx + 'px';
-    label.style.top = p.cy + 'px';
-    label.style.transform = 'translate(-50%, -50%) rotate(' + (p.angle || 0) + 'rad)';
+    label.style.left = '0px';
+    label.style.top = '0px';
+    label.style.transform = 'translate3d(' + p.cx + 'px,' + p.cy + 'px,0) translate(-50%, -50%) rotate(' + (p.angle || 0) + 'rad)';
     label.style.fontSize = Math.max(32, Math.min(w / (p.price.length * 0.55), h * 0.45)) + 'px';
     label.style.zIndex = 99999;
     label.style.display = 'flex';
@@ -161,6 +161,12 @@ function placeLabel(p) {
 }
 const HOVER_DELAY = 180;   // ms before the price shows
 let hoverTimer = null;
+// Hovering an image (in every mode) shows its price if Prices is on, and brings in two new images.
+function onHover(p) {
+  if (drag) return;
+  showPrice(p);
+  addPair();
+}
 function showPrice(p) {
   if (!showPrices) return;
   hidePrice();
@@ -168,8 +174,6 @@ function showPrice(p) {
   p.el.classList.add('priced');
   placeLabel(p);
   label.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: 'ease-out' });   // fade in
-  // With prices on, every hover (not dragging) brings in two new images.
-  if (!drag) addPair();
 }
 function hidePrice() {
   if (hovered) hovered.el.classList.remove('priced');
@@ -222,7 +226,7 @@ function addImage(cx, cy, animate, awayFrom) {
   const tilt = (Math.random() < 0.5 ? -1 : 1) * (0.015 + Math.random() * 0.055);
   const p = { el, cx, cy, scale: 1, w, h, price, name, angle: tilt, tilt };
   // short pause before the price appears, so passing over an image doesn't flash it
-  el.addEventListener('pointerenter', () => { clearTimeout(hoverTimer); hoverTimer = setTimeout(() => showPrice(p), HOVER_DELAY); });
+  el.addEventListener('pointerenter', () => { clearTimeout(hoverTimer); hoverTimer = setTimeout(() => onHover(p), HOVER_DELAY); });
   el.addEventListener('pointerleave', () => {
     clearTimeout(hoverTimer);
     if (hovered === p && !(drag && drag.p === p)) hidePrice();
@@ -291,8 +295,6 @@ function endDrag() {
     if (moved && sp > 40) { const k = 0.6 * Math.min(1, cap / (sp * 0.6)); p.vx = vx * k; p.vy = vy * k; }
     else drift(p);
   }
-  // Prices off: moving an image adds two new ones. Prices on: hovering does that instead.
-  if (moved && !showPrices && !p.isName) addPair();
 }
 
 // ---- Float toggle: images and name blocks hang almost still in space; they only really move when bumped ----
