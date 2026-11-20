@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 2026 Forbes Vetted Holiday Gift Guide</title>
+<style>
+  /* Same layout and hierarchy as the Forbes Vetted gift guide, with every image removed */
+  body { margin: 0; background: #fff; color: #000; font: 16px/1.5 Helvetica, Arial, sans-serif; }
+  a { color: inherit; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+  #home { display: inline-block; margin: 18px 0 0; font: 14px Times, serif; }
+
+  /* Article header */
+  .crumbs { margin: 22px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .crumbs span + span::before { content: "›"; margin: 0 10px; font-weight: 400; }
+  .head { max-width: 760px; margin: 48px auto 0; text-align: center; }
+  .year { display: inline-block; background: #c4161c; color: #fff; font-size: 12px; font-weight: 700; padding: 1px 7px; }
+  .kicker { margin: 14px 0 0; font: 30px/1.1 "Didot", "Bodoni 72", Georgia, serif; }
+  h1 { margin: 2px 0 0; font: 52px/1.05 "Didot", "Bodoni 72", Georgia, serif; font-weight: 400; }
+  .meta { max-width: 760px; margin: 36px auto 0; }
+  .disclosure { font-size: 17px; }
+  .disclosure a { font-weight: 700; }
+  .date { margin-top: 18px; padding-bottom: 18px; border-bottom: 1px solid #ddd; font-size: 15px; color: #333; }
+
+  /* Gift grid */
+  .grid-section { margin: 56px 0 80px; }
+  .controls { display: flex; gap: 12px; flex-wrap: wrap; }
+  .controls label { position: relative; }
+  .controls select {
+    appearance: none; -webkit-appearance: none; min-width: 210px; padding: 12px 40px 12px 18px;
+    border: 1px solid #ccc; border-radius: 30px; background: #fff; font: 16px Helvetica, Arial, sans-serif; cursor: pointer;
+  }
+  .controls label::after { content: "⌄"; position: absolute; right: 18px; top: 7px; font-size: 18px; pointer-events: none; }
+  .count-row { display: flex; justify-content: space-between; margin: 18px 0 16px; padding-top: 14px; border-top: 1px solid #ddd; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  @media (max-width: 1000px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 760px)  { .grid { grid-template-columns: repeat(2, 1fr); } h1 { font-size: 40px; } }
+  @media (max-width: 480px)  { .grid { grid-template-columns: 1fr; } .wrap { padding: 0 16px; } }
+
+  .card { position: relative; display: flex; flex-direction: column; background: #f6f6f6; padding: 20px; min-height: 190px; }
+  .card h6 { margin: 0; font-size: 19px; line-height: 1.25; font-weight: 600; }
+  .card .more { margin: 14px 0 18px; font-size: 13px; text-decoration: underline; }
+  .card .shop {
+    margin-top: auto; display: block; padding: 11px 12px; background: #c4161c; color: #fff;
+    text-align: center; text-decoration: none; font-size: 14px; font-weight: 700; border-radius: 3px;
+  }
+  /* The hover description takes over the card, like the original's hover panel */
+  .card .quote {
+    position: absolute; inset: 0; padding: 20px; overflow: auto; background: #ebebeb;
+    font-size: 15px; line-height: 1.45; opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  .card.has-quote:hover .quote, .card.has-quote:focus-within .quote { opacity: 1; pointer-events: auto; }
+  .card .quote .shop { position: absolute; left: 20px; right: 20px; bottom: 20px; }
+
+  .show-more { display: block; margin: 36px auto 0; padding: 12px 36px; border: 1px solid #000; border-radius: 30px; background: #fff; font: 15px Helvetica, Arial, sans-serif; cursor: pointer; }
+  .top { display: block; width: fit-content; margin: 18px auto 0; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a id="home" href="../index.html">Home</a>
+
+  <div class="crumbs"><span>Forbes Vetted</span><span>Gifts</span><span>Holiday</span></div>
+
+  <header class="head">
+    <span class="year">2026</span>
+    <p class="kicker">The Forbes Vetted</p>
+    <h1>Holiday Gift Guide</h1>
+  </header>
+
+  <div class="meta">
+    <p class="disclosure">Forbes writers and editors independently select all products and services. <a href="https://www.forbes.com/sites/forbes-personal-shopper/article/gift-guide-2026/">Learn More</a></p>
+    <p class="date">Published Nov 05, 2026, 09:00am EST</p>
+    <!-- __INTRO__ : the article's two intro paragraphs go here -->
+  </div>
+
+  <section class="grid-section" aria-label="Gift guide">
+    <div class="controls">
+      <label><select id="cat" aria-label="Category">
+        <option value="">Category</option>
+        <option value="All">All</option>
+        <option>Gadgets &amp; Gear</option>
+        <option>Little Luxuries</option>
+        <option>Home &amp; Holiday</option>
+        <option>Self-Care Staples</option>
+        <option>Toys &amp; Games</option>
+      </select></label>
+      <label><select id="sort" aria-label="Sort">
+        <option value="">Sort</option>
+        <option value="featured">Featured</option>
+        <option value="low">Low To High</option>
+        <option value="high">High To Low</option>
+      </select></label>
+    </div>
+    <div class="count-row"><span id="count"></span><span>Hover to read more</span></div>
+    <div class="grid" id="grid"></div>
+    <button class="show-more" id="more" type="button">Show More</button>
+    <a class="top" href="#home">Top</a>
+  </section>
+</div>
+<script>
+// [name, category, price, retailer, "shop label", url, description] for all 136 gifts, in Forbes' featured order
+const GIFTS = __GIFTS__;
+const PAGE = 20;
+let shown = PAGE;
+
+const grid = document.getElementById('grid');
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function list() {
+  const cat = document.getElementById('cat').value;
+  const sort = document.getElementById('sort').value;
+  let g = GIFTS.map((x, i) => ({ x, i })).filter(({ x }) => !cat || cat === 'All' || x.category === cat);
+  if (sort === 'low') g.sort((a, b) => a.x.price - b.x.price || a.i - b.i);
+  if (sort === 'high') g.sort((a, b) => b.x.price - a.x.price || a.i - b.i);
+  return g.map(o => o.x);
+}
+
+function draw() {
+  const all = list(), vis = all.slice(0, shown);
+  grid.innerHTML = vis.map(x => {
+    const shop = `<a class="shop" href="${esc(x.url)}" target="_blank" rel="noopener sponsored">${esc(x.shop)}</a>`;
+    const quote = x.description
+      ? `<div class="quote" tabindex="0">${x.description.split('\n').map(p => `<p>${esc(p)}</p>`).join('')}${shop}</div>` : '';
+    return `<article class="card${x.description ? ' has-quote' : ''}"><h6>${esc(x.name)}</h6><span class="more">Read More</span>${shop}${quote}</article>`;
+  }).join('');
+  document.getElementById('count').textContent = `Showing ${vis.length} of ${all.length} gifts`;
+  document.getElementById('more').style.display = vis.length < all.length ? '' : 'none';
+}
+
+document.getElementById('cat').addEventListener('change', () => { shown = PAGE; draw(); });
+document.getElementById('sort').addEventListener('change', () => { shown = PAGE; draw(); });
+document.getElementById('more').addEventListener('click', () => { shown += PAGE; draw(); });
+draw();
+</script>
+</body>
+</html>
