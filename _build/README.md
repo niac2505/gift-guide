@@ -56,3 +56,7 @@ Most big stores (Nordstrom, Sephora, Free People, Lululemon, Amazon, Etsy) block
 - **Brand sites (Shopify):** reviews are usually at the bottom, with a "Show more" or "Load more" button.
 
 `product_urls.json` lists every product link across all articles.
+
+## Page 3 (Forbes gift guide) descriptions
+
+Gift names, prices and links are in `forbes_gifts.json`. To add the hover descriptions, paste each one under its `### NNN Name` line in `forbes_descriptions.txt`, then rebuild. A card with a description shows it when hovered; a card without one doesn't change.

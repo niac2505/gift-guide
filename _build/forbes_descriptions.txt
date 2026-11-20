@@ -1,0 +1,411 @@
+Forbes gift descriptions (page 3)
+Paste each gift's description on the line(s) under its name. Leave a blank line before the next ### line.
+Blank paragraphs inside a description are fine. Then rebuild: python3 _build/build.py .  (from the website folder)
+
+### 001 Hyperice x Nike Air Zoom Hyperslide
+
+
+### 002 Aura Astra Frame
+
+
+### 003 Dyson Airsmooth
+
+
+### 004 Apple iPhone Duo
+
+
+### 005 Dorsey Cecilia Earrings
+
+
+### 006 Nintendo Switch 2 + Nintendo Switch Sports Resorts Bundle
+
+
+### 007 Quince Cashmere Lined Leather Gloves
+
+
+### 008 Mondo Robotics Beni
+
+
+### 009 Comfrt Dreamer Blanket
+
+
+### 010 Prada Hydrating Lip Balm
+
+
+### 011 Ray-Ban Meta Audio Clubmaster Glasses
+
+
+### 012 Tuckernuck Cashmere Knot Button Phoebe Cardigan
+
+
+### 013 Ghia Original Apéritif
+
+
+### 014 Louis Vuitton Horizon 55 Suitcase
+
+
+### 015 Caraway 10-Cup Coffee Maker
+
+
+### 016 Rhode Highlight Milk
+
+
+### 017 Solo Stove S'mores Bundle
+
+
+### 018 Vacanza Cap Ferrat Eau De Parfum
+
+
+### 019 Pistakio The "Cream" And "Crunch" Duo
+
+
+### 020 NeeDoh Nice Cube
+
+
+### 021 John Derian Green Grapes Ornament
+
+
+### 022 Amazon Kindle Paperwhite Signature Edition
+
+
+### 023 Strathberry Mosaic Nano
+
+
+### 024 Raaka Chocolate Library Gift Box
+
+
+### 025 Stapelstein Wonder Edition Rainbow Set
+
+
+### 026 Fossil Raquel Three Hand Date Stainless Steel Watch
+
+
+### 027 Sonos Ace Ultra
+
+
+### 028 Lodge Custom Engraved Text Skillet
+
+
+### 029 Therabody Theragun Mini
+
+
+### 030 Algae Cooking Club Musashi's Smoked Tomato Oil
+
+
+### 031 MoMA Artists Kids’ Book Collection
+
+
+### 032 Yves Saint Laurent Make Me Blush Cream Blush
+
+
+### 033 Skoot SkootCase
+
+
+### 034 Therabody TheraFace Mask
+
+
+### 035 Snow
+
+
+### 036 Ilia Beauty The Ethereal Baked Face Palette
+
+
+### 037 Gathre Trampoline
+
+
+### 038 Loewe Ivy Liquid Soap
+
+
+### 039 Tiny Tags Oval Locket Necklace
+
+
+### 040 Tin Can
+
+
+### 041 Olive Tree Frantoio Variety
+
+
+### 042 Ascari Cocktail Shaker Gift Set
+
+
+### 043 Bose SoundLink Micro Portable Speaker (2nd Gen)
+
+
+### 044 Petite Plume Women's Pima Pajama Set
+
+
+### 045 Maxx Action School Bus Toy Vehicle
+
+
+### 046 Margaux The Salamanca
+
+
+### 047 Augustinus Bader The 12 Days Of Bader
+
+
+### 048 Jonathan Adler Op Art Mahjong Set
+
+
+### 049 Kala Learn To Play Ukulele Starter Kit
+
+
+### 050 Lucci Lambrusco Reggiano DOC Secco
+
+
+### 051 Ugg Women's Heritage Lace-Up Slipper
+
+
+### 052 Simple Too
+
+
+### 053 Gund Forever Friends: Muttsy Puppy
+
+
+### 054 Abbode Signature Waffle Pouch
+
+
+### 055 Oura Ring 5
+
+
+### 056 American Girl 2027 Girl Of The Year: Daisy Davenport
+
+
+### 057 Meta Quest 3
+
+
+### 058 San Juan Island Sea Salt Movie Night Two-Pack
+
+
+### 059 Minted Notebook
+
+
+### 060 Hourglass Ambient Lighting Edit Unlocked
+
+
+### 061 Therabody TheraFace Depuffing Wand
+
+
+### 062 Super Smalls Under The Sea Gemify Sticker Booklet
+
+
+### 063 Uncommon Goods Books Read This Year Tracker And Bookend
+
+
+### 064 Razor Scooter Lightwave
+
+
+### 065 Sterling Forever Bezel Eternity Tennis Bracelet
+
+
+### 066 CB2 Multi Colored Acrylic Tumbling Tower Game
+
+
+### 067 Clé De Peau Beauté La Crème
+
+
+### 068 3Doodler Start+ Essentials 3D Pen Set
+
+
+### 069 Bose Noise Cancelling Wired Earbuds
+
+
+### 070 Eternate Custom Charm Necklace
+
+
+### 071 Mount To Coast R1 Sneakers
+
+
+### 072 ChappyWrap Shawl
+
+
+### 073 Vintage Cars
+
+
+### 074 Tiffany & Co. HardWear Medium Link Earrings
+
+
+### 075 Jimbobart 'I Really Otter Have Cheese' Side Plate
+
+
+### 076 Camp Snap 110D camera
+
+
+### 077 Amalfi Coast And Capri Travel Series Gift Set
+
+
+### 078 Buck Mason California Cashmere Collared Cardigan
+
+
+### 079 Simon Pearce Dorset Bar Glass Suite (Set Of 4)
+
+
+### 080 JLab JBuds Mini ANC Earbuds
+
+
+### 081 Anthropologie Storybook Jewelry Box
+
+
+### 082 Toniebox Lite My Story Set
+
+
+### 083 Baccarat Harmonie Bar Accessories Set
+
+
+### 084 Jenny Bird Small Lowe Pavé Earrings
+
+
+### 085 Apple Watch Series 12
+
+
+### 086 Cat In A Hat
+
+
+### 087 Keith Haring Monopoly
+
+
+### 088 Flaus Electric Flosser Starter Kit
+
+
+### 089 Barefoot Dreams CozyChic New York Knicks Robe
+
+
+### 090 Row 7 Tinned Vegetable Sampler
+
+
+### 091 Ms. Rachel My First Learning Farm Playset
+
+
+### 092 Donnafugata x Dolce & Gabbana <span style="text-decoration-line: none">Cuordilava</span> (2020)
+
+
+### 093 Nex Playground
+
+
+### 094 The Watch Book Rolex
+
+
+### 095 LetPot LPH-Max Indoor Garden
+
+
+### 096 Little Tikes Sweet Spaces Modular Kitchen Refrigerator
+
+
+### 097 Loeffler Randall Rayne Black Bow Clutch
+
+
+### 098 Portrai Me Custom Color Illustration
+
+
+### 099 Minnow Unisex Breton Stripe Cashmere Crewneck Sweater
+
+
+### 100 Goop Gwyneth's Everything Shower Kit
+
+
+### 101 Nestig Embroidered Hop Mini Chair
+
+
+### 102 Satechi OntheGo 5-in-1 Multiport Adapter
+
+
+### 103 HigherDose Full Body Red Light Mat
+
+
+### 104 Connetix Magnetic Tiles Travel Mini Pack
+
+
+### 105 Matic Robot Vacuum & Mop
+
+
+### 106 Dusen Dusen Everybody Salt And Pepper Grinders
+
+
+### 107 Very Bergdorf
+
+
+### 108 Rise Centered The Original Sunrise Alarm Clock
+
+
+### 109 Vosges Hearthside S'mores Kit
+
+
+### 110 CB2 Cupola Viola Marble Double Taper Candle Holder
+
+
+### 111 Wonderbly Our Family Saves Christmas Custom Storybook
+
+
+### 112 Peak Design City Sling
+
+
+### 113 Kate McLeod The Body Stone Lotion Bar
+
+
+### 114 Make N’ Believe Galactic Dreamer Bead Kit
+
+
+### 115 Ugg Women’s Cozy Chenille Socks
+
+
+### 116 NouBon Ghost Pepper Peanut Butter
+
+
+### 117 AeroPress Coffee Station Bundle (Steel)
+
+
+### 118 Huupe Mini 2
+
+
+### 119 Nest New York x Pierre Marie Holiday Reed Diffuser
+
+
+### 120 Whoop Meridian Band
+
+
+### 121 West Elm Russ & Daughters Pickle Trinket Tray
+
+
+### 122 Sunday Club 2026 Annual Gift Pass
+
+
+### 123 Elix Acu-Wand
+
+
+### 124 Waggle Pet Monitor
+
+
+### 125 Barbie In The Nutcracker Clara Doll
+
+
+### 126 Rimowa Essential Cabin
+
+
+### 127 Liberty Premium Notecard Set
+
+
+### 128 Grace: Now
+
+
+### 129 Drowsy Breakfast At Drowsy Silk Sleep Mask
+
+
+### 130 Santa Maria Novella Melograno Glass Candle
+
+
+### 131 Clicks Power Keyboard
+
+
+### 132 Old Whaling Co. Coastal Calm Shower Steamers
+
+
+### 133 Jenni Kayne Cropped Cashmere Jet V-Neck
+
+
+### 134 Lego Pokémon Smart Play Training House With Pikachu
+
+
+### 135 La Bonne Brosse N. 02 The Body Brush
+
+
+### 136 Meater Pro
+

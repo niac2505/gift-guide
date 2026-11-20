@@ -21,6 +21,13 @@ _b=os.path.dirname(os.path.abspath(__file__))
 import json as _json
 _g=_json.load(open(os.path.join(_b,'forbes_gifts.json'),encoding='utf-8'))
 for _x in _g: _x['price']=float(_x['price'] or 0)
+# descriptions pasted into forbes_descriptions.txt (under each '### NNN Name' line) fill the hover panels
+import re as _re
+_d=os.path.join(_b,'forbes_descriptions.txt')
+if os.path.exists(_d):
+    for _m in _re.finditer(r'^### (\d{3}) [^\n]*\n(.*?)(?=^### |\Z)',open(_d,encoding='utf-8').read(),_re.S|_re.M):
+        _txt=_re.sub(r'\n\s*\n+','\n',_m.group(2).strip())
+        if _txt: _g[int(_m.group(1))-1]['description']=_txt
 os.makedirs(f'{out}/page-3',exist_ok=True)
 open(f'{out}/page-3/index.html','w',encoding='utf-8').write(open(os.path.join(_b,'page3_template.html'),encoding='utf-8').read().replace('__GIFTS__',_json.dumps(_g,ensure_ascii=False).replace('</','<\\/')))
 for n in range(4,6):
