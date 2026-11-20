@@ -174,7 +174,7 @@ __GRID__
     for (const img of pkgs) {
       if (img.dataset.fallen) continue;
       const r = img.getBoundingClientRect();
-      if (r.bottom > 0 && r.top < line && r.top < innerHeight) drop(img);
+      if (r.top < line) drop(img);   // includes ones that flew past in a fast scroll (they drop in from the top)
     }
   }
   addEventListener('scroll', check, { passive: true });
