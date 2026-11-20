@@ -55,6 +55,7 @@
   }
   body.floating #board .name { display: block; }
   #board .name.dragging { cursor: grabbing; }
+  #board .name.new { animation: pop .35s ease-out; }
 
   /* While prices are on, the hovered image is swapped for its price */
   #board img.priced { opacity: 0; }
@@ -197,11 +198,14 @@ function randomSpot(w, h, awayFrom) {
   ];
   // never drop a new image right under the mouse (it would instantly count as hovered)
   const underMouse = s => Math.abs(s[0] - mouse[0]) < w / 2 + 10 && Math.abs(s[1] - mouse[1]) < h / 2 + 10;
-  const minDist = awayFrom ? Math.hypot(innerWidth, innerHeight) * 0.45 : 0;
+  // a different random gap every time, so pairs don't always land in opposite corners
+  const minDist = awayFrom ? Math.hypot(innerWidth, innerHeight) * (0.18 + Math.random() * 0.2) : 0;
+  // and never in the same row or column as the first one (so they don't look lined up)
+  const lined = s => awayFrom && (Math.abs(s[0] - awayFrom[0]) < innerWidth * 0.12 || Math.abs(s[1] - awayFrom[1]) < innerHeight * 0.12);
   let fallback = null, farD = -1;
   for (let t = 0; t < 80; t++) {
     const s = rand();
-    if (underMouse(s)) continue;
+    if (underMouse(s) || lined(s)) continue;
     const d = awayFrom ? Math.hypot(s[0] - awayFrom[0], s[1] - awayFrom[1]) : 0;
     if (d >= minDist) return s;                 // first random spot that is far enough
     if (d > farD) { farD = d; fallback = s; }   // otherwise remember the farthest one
@@ -223,7 +227,7 @@ function addImage(cx, cy, animate, awayFrom) {
   if (animate) el.className = 'new';
   el.style.zIndex = zTop++;
   // every image sits at a slight random tilt (about ±4°), never perfectly level
-  const tilt = (Math.random() < 0.5 ? -1 : 1) * (0.015 + Math.random() * 0.055);
+  const tilt = (Math.random() < 0.5 ? -1 : 1) * (0.015 + Math.random() * 0.09);   // about 1°–6°
   const p = { el, cx, cy, scale: 1, w, h, price, name, angle: tilt, tilt };
   // short pause before the price appears, so passing over an image doesn't flash it
   el.addEventListener('pointerenter', () => { clearTimeout(hoverTimer); hoverTimer = setTimeout(() => onHover(p), HOVER_DELAY); });
@@ -257,7 +261,8 @@ function addWithShrink(awayFrom) {
 // Two new images, placed far apart from each other.
 function addPair() {
   const a = addWithShrink();
-  addWithShrink(a ? [a.cx, a.cy] : null);
+  // the second one follows a moment later, at a random delay, so they don't pop in together
+  setTimeout(() => addWithShrink(a ? [a.cx, a.cy] : null), 120 + Math.random() * 260);
 }
 
 // One drag at a time, tracked on the whole window so fast moves never "drop" the image.
@@ -266,7 +271,7 @@ function makeDraggable(p) {
   p.el.addEventListener('pointerdown', e => {
     e.preventDefault();
     p.el.classList.add('dragging');
-    p.el.style.zIndex = zTop++;
+    p.el.style.zIndex = p.isName ? nameZ++ : zTop++;
     drag = { p, startX: e.clientX, startY: e.clientY, offX: e.clientX - p.cx, offY: e.clientY - p.cy,
              moved: false, vx: 0, vy: 0, t: performance.now() };
   });
@@ -299,6 +304,7 @@ function endDrag() {
 
 // ---- Float toggle: images and name blocks hang almost still in space; they only really move when bumped ----
 let floating = false;
+let nameZ = 50000;   // name blocks stack above images (images count up from 1)
 const names = [];   // name blocks: { el, cx, cy, w, h, scale, angle, vx, vy, va, isName }
 const floatToggle = document.getElementById('floatToggle');
 
@@ -318,12 +324,14 @@ function drift(p) {
 function addName(p) {
   if (p.nameBlock) return;
   const el = document.createElement('div');
-  el.className = 'name';
+  el.className = 'name new';
   el.textContent = p.name;
-  el.style.zIndex = zTop++;
+  el.style.zIndex = nameZ++;   // names always sit above every image
   board.appendChild(el);
   const n = { el, cx: p.cx + (Math.random() - 0.5) * p.w * 0.6, cy: p.cy + (Math.random() - 0.5) * p.h * 0.6,
               w: el.offsetWidth, h: el.offsetHeight, scale: 1, angle: (Math.random() - 0.5) * 0.9, isName: true };
+  n.cx = Math.max(n.w / 2 + 10, Math.min(innerWidth - n.w / 2 - 10, n.cx));
+  n.cy = Math.max(n.h / 2 + 10, Math.min(innerHeight - n.h / 2 - 10, n.cy));
   drift(n);
   p.nameBlock = n;
   names.push(n);
