@@ -110,9 +110,9 @@ const CLOTHING_SCALE = 1.2;   // 20% bigger
 
 // Every image gets roughly the same visual area, based on the window size.
 function baseSize(w, h, file) {
-  const s = Math.min(innerWidth, innerHeight) * 0.27 * (CLOTHING.has(file) ? CLOTHING_SCALE : 1);
+  const s = Math.min(innerWidth, innerHeight) * 0.27 * 1.15 * (CLOTHING.has(file) ? CLOTHING_SCALE : 1);
   let bw = s * Math.sqrt(w / h), bh = s * Math.sqrt(h / w);
-  const maxH = innerHeight * 0.55;
+  const maxH = innerHeight * 0.55 * 1.15;   // 15% bigger than before
   if (bh > maxH) { bw *= maxH / bh; bh = maxH; }
   return [bw, bh];
 }
