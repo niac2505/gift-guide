@@ -14,8 +14,8 @@
     transition: width .25s ease, height .25s ease, transform .25s ease, opacity .2s ease;
   }
   #board img.dragging { cursor: grabbing; transition: none; }
-  #board img.new { animation: pop .35s ease-out; }
-  @keyframes pop { from { opacity: 0; scale: .85; } to { opacity: 1; scale: 1; } }   /* uses `scale` so it keeps the tilt */
+  #board img.new { animation: pop 1.1s cubic-bezier(.22,.61,.36,1) both; }
+  @keyframes pop { from { opacity: 0; scale: .94; } to { opacity: 1; scale: 1; } }   /* uses `scale` so it keeps the tilt */
   #home { position: fixed; top: 12px; left: 18px; z-index: 100000; font: 14px Times, serif; color: #000; }
 
   /* Running total of every gift on screen (top center) */
@@ -55,7 +55,7 @@
   }
   body.floating #board .name { display: block; }
   #board .name.dragging { cursor: grabbing; }
-  #board .name.new { animation: pop .35s ease-out; }
+  #board .name.new { animation: pop 1.1s cubic-bezier(.22,.61,.36,1) .25s both; }   /* name follows just after its image */
 
   /* While prices are on, the hovered image is swapped for its price */
   #board img.priced { opacity: 0; }
@@ -262,7 +262,7 @@ function addWithShrink(awayFrom) {
 function addPair() {
   const a = addWithShrink();
   // the second one follows a moment later, at a random delay, so they don't pop in together
-  setTimeout(() => addWithShrink(a ? [a.cx, a.cy] : null), 120 + Math.random() * 260);
+  setTimeout(() => addWithShrink(a ? [a.cx, a.cy] : null), 450 + Math.random() * 450);
 }
 
 // One drag at a time, tracked on the whole window so fast moves never "drop" the image.
