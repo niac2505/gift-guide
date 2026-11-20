@@ -137,9 +137,9 @@ __GRID__
   });
 
   // size a package takes in the pile: small enough that ~100 of them make a heap, not a wall
-  // sized from the screen area so that all of them together fill roughly the bottom half
+  // twice the size (4x the area) of before, so by the end the heap fills the whole screen
   function pileSize(w, h) {
-    const area = innerWidth * innerHeight * 0.27 / Math.max(1, pkgCount) * (0.7 + Math.random() * 0.7);
+    const area = innerWidth * innerHeight * 1.08 / Math.max(1, pkgCount) * (0.7 + Math.random() * 0.7);
     const r = Math.max(0.5, Math.min(2, w / h));
     return [Math.sqrt(area * r), Math.sqrt(area / r)];
   }
@@ -166,14 +166,14 @@ __GRID__
     items.push({ body, el, w, h, t0: performance.now(), fromW: r.width, fromH: r.height });
   }
 
-  // a photo drops once it has scrolled up past the middle of the screen
+  // a photo stays on the page until it has almost scrolled off the top, then drops
 
   let lastY = scrollY;
   function check() {
     const down = scrollY > lastY;
     lastY = scrollY;
     if (!down) return;
-    const line = innerHeight * 0.45;
+    const line = innerHeight * 0.08;
     for (const img of pkgs) {
       if (img.dataset.fallen) continue;
       const r = img.getBoundingClientRect();
