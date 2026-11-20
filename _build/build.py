@@ -9,7 +9,7 @@ def item(i):
     return f'<li>{name}<br>\n{e(i["desc"])}</li>' if i.get('desc') else f'<li>{name}</li>'
 os.makedirs(f'{out}/refinery29',exist_ok=True)
 # home
-links='\n'.join(f'<li><a href="{h}">{t}</a></li>' for h,t in [('refinery29/the-art-of-giving.html','Refinery29'),('page-2/index.html','Vogue Gifts Under $100'),('page-3/index.html','Forbes Holiday Gift Guide'),('page-4/index.html','Page 4'),('page-5/index.html','Page 5')])
+links='\n'.join(f'<li><a href="{h}">{t}</a></li>' for h,t in [('refinery29/the-art-of-giving.html','Refinery29'),('page-2/index.html','Vogue Gifts Under $100'),('page-3/index.html','Forbes Holiday Gift Guide'),('page-4/index.html','The Atlantic Gift Guide'),('page-5/index.html','Page 5')])
 open(f'{out}/index.html','w').write(page('Home',f'<h1>Home</h1>\n<ul>\n{links}\n</ul>',0))
 # page 2 is the Vogue collage (built from _build/page2_template.html)
 _t=os.path.join(os.path.dirname(os.path.abspath(__file__)),'page2_template.html')
@@ -30,7 +30,35 @@ if os.path.exists(_d):
         if _txt: _g[int(_m.group(1))-1]['description']=_txt
 os.makedirs(f'{out}/page-3',exist_ok=True)
 open(f'{out}/page-3/index.html','w',encoding='utf-8').write(open(os.path.join(_b,'page3_template.html'),encoding='utf-8').read().replace('__GIFTS__',_json.dumps(_g,ensure_ascii=False).replace('</','<\\/')))
-for n in range(4,6):
+# page 4 is The Atlantic's gift guide: images replaced by their text descriptions
+# (built from _build/page4_template.html + atlantic_gifts.json + atlantic_descriptions.txt)
+import html as _h
+_A=_json.load(open(os.path.join(_b,'atlantic_gifts.json'),encoding='utf-8'))
+_ad={}
+_af=os.path.join(_b,'atlantic_descriptions.txt')
+if os.path.exists(_af):
+    for _m in _re.finditer(r'^### (\d{2}) [^\n]*\n(.*?)(?=^#{1,3} |\Z)',open(_af,encoding='utf-8').read(),_re.S|_re.M):
+        _t=_m.group(2).strip()
+        if _t: _ad[int(_m.group(1))]=[p.strip() for p in _re.split(r'\n\s*\n',_t) if p.strip()]
+_slug=lambda s:_re.sub(r'[^a-z0-9]+','-',s.lower()).strip('-')
+_cols=['#006edd','#ff2a00','#ff3da5','#00a851','#ff2a00','#006edd']
+_e=lambda s:_h.escape(s,quote=True)
+_nav=''.join(f'<a href="#{_slug(s["t"])}">{_e(s["t"])}</a>' for s in _A)
+_jump=''.join(f'<li><a href="#{_slug(s["t"])}" style="text-decoration-color:{_cols[i%6]}">{_e(s["t"])}</a></li>' for i,s in enumerate(_A))
+_secs=[];_n=0
+for s in _A:
+    cards=[]
+    for (title,alt,credit,by,byurl,buy,url) in s['c']:
+        _n+=1
+        desc=''.join(f'<p>{_e(p)}</p>' for p in _ad.get(_n,[]))
+        name,_,role=by.partition(', ')
+        byl=(f'<a href="{_e(byurl)}">{_e(name)}</a>' if byurl else _e(name))+(f', {_e(role)}' if role else '')
+        buyh=f'<div class="buy"><a href="{_e(url)}" target="_blank" rel="noopener sponsored">{_e(buy)}</a></div>' if url else ''
+        cards.append(f'<article class="card"><figure><p class="img-desc">{_e(alt)}</p><figcaption>{_e(credit)}</figcaption></figure><h3>{_e(title)}</h3><div class="desc">{desc}</div><p class="byline">— {byl}</p>{buyh}</article>')
+    _secs.append(f'  <section class="gifts" id="{_slug(s["t"])}">\n    <h2>{_e(s["t"])}</h2>\n    <div class="grid">\n' + '\n'.join('      '+c for c in cards) + '\n    </div>\n  </section>')
+os.makedirs(f'{out}/page-4',exist_ok=True)
+open(f'{out}/page-4/index.html','w',encoding='utf-8').write(open(os.path.join(_b,'page4_template.html'),encoding='utf-8').read().replace('__NAV__',_nav).replace('__JUMP__',_jump).replace('__SECTIONS__','\n'.join(_secs)))
+for n in range(5,6):
     os.makedirs(f'{out}/page-{n}',exist_ok=True)
     open(f'{out}/page-{n}/index.html','w').write(page(f'Page {n}',f'<p><a href="../index.html">Home</a></p>\n<h1>Page {n}</h1>\n<p>Coming soon.</p>',1))
 # hub

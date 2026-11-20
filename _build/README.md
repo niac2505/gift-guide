@@ -60,3 +60,7 @@ Most big stores (Nordstrom, Sephora, Free People, Lululemon, Amazon, Etsy) block
 ## Page 3 (Forbes gift guide) descriptions
 
 Gift names, prices and links are in `forbes_gifts.json`. To add the hover descriptions, paste each one under its `### NNN Name` line in `forbes_descriptions.txt`, then rebuild. A card with a description shows it when hovered; a card without one doesn't change.
+
+## Page 4 (Atlantic gift guide) descriptions
+
+Section, title, image description, photo credit, writer and buy link for all 55 gifts are in `atlantic_gifts.json`. Paste each writer's description under its `### NN Title` line in `atlantic_descriptions.txt` (without the "— Name, Role" line, which the page adds), then rebuild.

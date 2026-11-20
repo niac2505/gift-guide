@@ -1,0 +1,180 @@
+Atlantic gift descriptions (page 4)
+Paste each gift's description under its title. Leave a blank line before the next ### line.
+Don't include the '— Name, Role' line; the page adds it. Then rebuild: python3 _build/build.py .  (from the website folder)
+
+# The Quintessential Host
+
+### 01 The Best Cheese in America
+
+
+### 02 Marionette Replicas
+
+
+### 03 The Perfect Juicer
+
+
+### 04 Top-Tier Coffee
+
+
+### 05 The Muscle Car of Espresso Machines
+
+
+### 06 Handcrafted Knives
+
+
+### 07 The Silverware You Can Keep Gifting
+
+
+### 08 The Joy of Cooking
+
+
+### 09 A Fun Cake Server
+
+
+# The Lifelong Student
+
+### 10 Your Own Ticker
+
+
+### 11 A Whole Library
+
+
+### 12 A Custom Insect Specimen
+
+
+### 13 A Guide to American Goods
+
+
+### 14 Not Your Average Candle
+
+
+### 15 A Journal to Remember What—And Where—You Read
+
+
+### 16 The Ultimate Board Game
+
+
+### 17 A Better Way Down
+
+
+### 18 A Written Time Capsule
+
+
+# The Person Who Has Everything
+
+### 19 Ridiculously Fragrant Laundry Detergent
+
+
+### 20 Limited-Edition Oreos
+
+
+### 21 Peepy
+
+
+### 22 The Best Peanut Butter in the World
+
+
+### 23 A Professional Home Organizer
+
+
+### 24 A Cuckoo Clock
+
+
+### 25 A Home for Their Butter
+
+
+### 26 A Post-Shower Luxury
+
+
+### 27 Perfume for the It Girl
+
+
+### 28 Dessert in a Bottle
+
+
+# The Person Who Needs to Touch Grass
+
+### 29 Low-Pressure Painting
+
+
+### 30 A New Way to Read
+
+
+### 31 Sapphire Hunting in Montana
+
+
+### 32 Rad Gloves
+
+
+### 33 A Simple Watch
+
+
+### 34 A Tea Era
+
+
+### 35 The Book of Distraction
+
+
+### 36 A Fishing Rod for the Everyman
+
+
+### 37 Whimsical Vases
+
+
+### 38 The Cadillac of Binoculars
+
+
+# The Practical One
+
+### 39 The Communal Outdoor Couch
+
+
+### 40 A Lazy Cat Lover’s Dream
+
+
+### 41 A Matchmaker
+
+
+### 42 More Than a Candle
+
+
+### 43 Bento Boon
+
+
+### 44 A Sleek Bedside Assistant
+
+
+### 45 An Electric Gargoyle
+
+
+### 46 A Ritual for Your Candle
+
+
+### 47 Better Tools
+
+
+### 48 Boots Really Made for Walking
+
+
+# The Creative Person
+
+### 49 A Four-Day Pass to the Best, Weirdest Musical Festival
+
+
+### 50 An Eye-Popping Print
+
+
+### 51 Bookplates
+
+
+### 52 Tree of Life Pitcher
+
+
+### 53 An Actually Unique Tote
+
+
+### 54 Pet Portrait
+
+
+### 55 A Life-Crisis Solver
+

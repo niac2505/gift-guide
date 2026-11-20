@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 2026 Atlantic Gift Guide</title>
+<style>
+  /* Same layout as The Atlantic's 2026 gift guide; every image is replaced by its text description */
+  :root { --serif: Garamond, "Adobe Garamond Pro", "EB Garamond", Georgia, serif; --sans: "Helvetica Neue", Helvetica, Arial, sans-serif; --red: #e7131a; }
+  body { margin: 0; background: #fff; color: #000; font-family: var(--serif); }
+  a { color: inherit; }
+
+  /* sticky top bar */
+  .bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 18px; padding: 10px 24px; background: #fff; border-bottom: 1px solid #e5e5e5; font: 12px var(--sans); letter-spacing: .08em; }
+  .bar .lockup { font-weight: 700; white-space: nowrap; }
+  .bar nav { display: flex; gap: 18px; overflow-x: auto; white-space: nowrap; letter-spacing: 0; font-size: 13px;  scrollbar-width: none; }
+  .bar nav::-webkit-scrollbar { display: none; }
+  .bar nav a { text-decoration: none; }
+  .bar .home { margin-right: 6px; letter-spacing: 0; font-size: 13px; }
+
+  .wrap { max-width: 1400px; margin: 0 auto; padding: 0 16px; }
+
+  /* header */
+  h1 { margin: 64px 0 0; text-align: center; font-family: "Didot", "Bodoni 72", "Bodoni MT", var(--serif); font-weight: 300; line-height: .95; }
+  h1 span { display: block; font-size: 105px; }
+  h1 span:first-child { font-size: 50px; margin-bottom: 6px; }
+  .header-text { max-width: 760px; margin: 56px auto 0; font-size: 22px; line-height: 1.45; }
+  .disclaimer { font-style: italic; color: #2c2825; }
+
+  .subscribe { margin: 64px auto 0; text-align: center; font-size: 18px; }
+  .subscribe .by { display: block; margin-top: 4px; }
+  .give { display: inline-block; margin-top: 14px; padding: 9px 18px; background: #fbd3cc; border: 1px solid #e7131a; border-radius: 3px; font: 13px "Courier New", monospace; text-decoration: none; }
+
+  .jump { margin: 72px auto 0; text-align: center; }
+  .jump h2 { margin: 0 0 22px; font: 300 24px "Didot", "Bodoni 72", var(--serif); text-transform: uppercase; letter-spacing: .02em; }
+  .jump ul { list-style: none; margin: 0 auto; padding: 0; max-width: 720px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 30px; }
+  .jump a { font-size: 20px; font-weight: 600; color: #2c2825; text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+
+  /* gift sections */
+  section.gifts { margin-top: 96px; }
+  section.gifts h2 { margin: 0 0 28px; padding-top: 16px; border-top: 1px solid #000; font: 700 14px var(--sans); color: var(--red); text-transform: uppercase; letter-spacing: .5px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 30px; }
+  @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px)  { .grid { grid-template-columns: 1fr; } h1 span { font-size: 64px; } h1 span:first-child { font-size: 34px; } .jump ul { grid-template-columns: 1fr; } }
+
+  .card { display: flex; flex-direction: column; }
+  /* where the photo was: its text description */
+  .card figure { margin: 0; }
+  .card .img-desc { margin: 0; padding: 22px 24px; background: #f4f2ee; font-size: 18px; line-height: 1.4; font-style: italic; color: #2c2825; }
+  .card figcaption { margin-top: 8px; font: 12px var(--sans); color: #6f6c69; text-transform: uppercase; letter-spacing: .24px; }
+  .card h3 { margin: 18px 0 0; font-size: 32px; font-weight: 400; line-height: 1.1; }
+  .card .desc { margin: 14px 0 0; font-size: 18px; line-height: 1.45; }
+  .card .desc p { margin: 0 0 .8em; }
+  .card .byline { margin: 6px 0 0; font-size: 18px; }
+  .card .buy { margin-top: auto; padding-top: 22px; text-align: center; font: 14px var(--sans); }
+  .card .buy a { display: block; padding: 11px; border: 1px solid #000; text-decoration: none; }
+
+  .credits { margin: 96px 0 64px; text-align: center; font: 13px var(--sans); color: #6f6c69; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <a class="home" href="../index.html">Home</a>
+  <span class="lockup">GIFT GUIDE 2026</span>
+  <nav>__NAV__</nav>
+</div>
+
+<div class="wrap">
+  <h1><span>The 2026</span><span>Atlantic</span><span>Gift Guide</span></h1>
+
+  <div class="header-text">
+    <p>Welcome to <i>The Atlantic</i>’s 2026 gift guide! Our editorial team has selected 55 gifts for this holiday season; find something to delight everyone in your life.</p>
+    <p class="disclaimer">This list of products has been selected by <span style="font-style:normal">Atlantic</span> staff. If you use our links to buy these gifts, <span style="font-style:normal">The Atlantic</span> may receive a commission. Some items may be available at a holiday discount.</p>
+  </div>
+
+  <div class="subscribe">
+    <p>Maybe consider a gift subscription to <i>The Atlantic</i>?<span class="by">— <a href="https://www.theatlantic.com/author/jeffrey-goldberg/">Jeffrey Goldberg</a>, Editor in Chief</span></p>
+    <a class="give" href="https://accounts.theatlantic.com/products/gift/?source=giftguide">Give The Atlantic</a>
+  </div>
+
+  <div class="jump">
+    <h2>Jump to gifts for</h2>
+    <ul>__JUMP__</ul>
+  </div>
+
+__SECTIONS__
+
+  <p class="credits">Illustrations by Roberts Rurans</p>
+</div>
+</body>
+</html>
