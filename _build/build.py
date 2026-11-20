@@ -54,7 +54,7 @@ for s in _A:
         name,_,role=by.partition(', ')
         byl=(f'<a href="{_e(byurl)}">{_e(name)}</a>' if byurl else _e(name))+(f', {_e(role)}' if role else '')
         buyh=f'<div class="buy"><a href="{_e(url)}" target="_blank" rel="noopener sponsored">{_e(buy)}</a></div>' if url else ''
-        cards.append(f'<article class="card"><figure><p class="img-desc">{_e(alt)}</p><figcaption>{_e(credit)}</figcaption></figure><h3>{_e(title)}</h3><div class="desc">{desc}</div><p class="byline">— {byl}</p>{buyh}</article>')
+        cards.append(f'<article class="card"><h3>{_e(title)}</h3><div class="desc">{desc}</div>{buyh}</article>')   # image box, photo credit and writer credit removed
     _secs.append(f'  <section class="gifts" id="{_slug(s["t"])}">\n    <h2>{_e(s["t"])}</h2>\n    <div class="grid">\n' + '\n'.join('      '+c for c in cards) + '\n    </div>\n  </section>')
 os.makedirs(f'{out}/page-4',exist_ok=True)
 open(f'{out}/page-4/index.html','w',encoding='utf-8').write(open(os.path.join(_b,'page4_template.html'),encoding='utf-8').read().replace('__NAV__',_nav).replace('__JUMP__',_jump).replace('__SECTIONS__','\n'.join(_secs)))
