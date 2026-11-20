@@ -246,9 +246,9 @@ function addImage(cx, cy, animate, awayFrom) {
 function springIn(el, angle, delay = 0) {
   const a = angle || 0, k = (Math.random() < 0.5 ? -1 : 1);   // swing from a random side
   el.animate([
-    { scale: 0,    rotate: (a + k * 0.22) + 'rad', easing: 'cubic-bezier(.2,.7,.4,1)' },
-    { scale: 1.05, rotate: (a - k * 0.035) + 'rad', offset: 0.5, easing: 'ease-in-out' },
-    { scale: 0.985, rotate: (a + k * 0.01) + 'rad', offset: 0.78, easing: 'ease-in-out' },
+    { scale: 0,    rotate: (a + k * 0.15) + 'rad', easing: 'cubic-bezier(.2,.7,.4,1)' },
+    { scale: 1.02, rotate: (a - k * 0.015) + 'rad', offset: 0.5, easing: 'ease-in-out' },
+    { scale: 0.995, rotate: (a + k * 0.004) + 'rad', offset: 0.78, easing: 'ease-in-out' },
     { scale: 1,    rotate: a + 'rad' }
   ], { duration: 850, delay, fill: 'backwards' });
 }
